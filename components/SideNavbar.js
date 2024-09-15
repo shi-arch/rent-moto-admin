@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Disclosure } from "@headlessui/react";
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 import {
   MdOutlineSpaceDashboard,
   MdOutlineAnalytics,
@@ -36,23 +37,23 @@ function SideNavbar() {
               Virtual Dashboard
             </h1>
             <div className=" my-4 border-b border-gray-100 pb-4">
-              <a href="/">
+              <Link href="/">
                 <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path == '/' ? ' clickBg' : '')}>
                   <MdOutlineSpaceDashboard className={"text-2xl text-gray-600 group-hover:text-white " + (path == '/' ? 'clickColor' : '')} />
                   <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path == '/' ? ' clickColor' : '')}>
                     Dashboard
                   </h3>
                 </div>
-              </a>
+              </Link>
 
-              <a href="/users">
+              <Link href="/users">
                 <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path == '/users' ? ' clickBg' : '')}>
                   <CgProfile className={"text-2xl text-gray-600 group-hover:text-white " + (path == '/users' ? 'clickColor' : '')} />
                   <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path == '/users' ? ' clickColor' : '')}>
                     Users
                   </h3>
                 </div>
-              </a>
+              </Link>
 
               <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path == '/locations' ? ' clickBg' : '')}>
                 <CgProfile className={"text-2xl text-gray-600 group-hover:text-white " + (path == '/locations' ? 'clickColor' : '')} />
