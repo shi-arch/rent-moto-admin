@@ -71,7 +71,7 @@ export default function DisplayTable() {
                             customVehicleData.length ?
                                 customVehicleData.map((o) => {
                                     const { pickupLocation, location, vehicleNumber, name, url, pricePerday, distanceLimit, accessChargePerKm, transmissionType, brand, bookingCount, BookingEndDateAndTime, BookingStartDateAndTime, bookingAmount } = o
-                                    return < tr >
+                                    return < tr key={o.vehicleNumber}>
                                         <td style={{ textAlign: "left" }}>
                                             <User
                                                 name={name}
