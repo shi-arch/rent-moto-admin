@@ -1,3 +1,32 @@
-.click {
+.clickColor {
     color: white;
 }
+
+.clickBg {
+    background-color: black;
+}
+
+img{
+    width: 80px!important;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: max-content;
+  }
+  
+  td, th {
+    border: 2.5px solid #dddddd;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+  .tap-highlight-transparent{
+    font-size: larger;
+    margin: 6px 15px;
+  }

@@ -10,7 +10,7 @@ export default function Home() {
         <link rel="icon" href="/pro.ico" />
       </Head>
       <SideNavbar />
-      <div style={{padding: "1px 396px"}}>
+      <div style={{padding: "24px 20px 31px 267px", background: "white"}}>
         <h1>Welcome Home</h1>
       </div>
     </div>
