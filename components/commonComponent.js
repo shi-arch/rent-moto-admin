@@ -77,14 +77,12 @@ export const UserTableHeader = () => {
 
 export const DropDown = (props) => {
     const { locationData } = useSelector((state) => state)
-    const { label, location, setPacket, packet } = props
+    const { label, location, setPacket, packet, pickupLocation } = props
     const [dropData, setDropData] = useState([])
     useEffect(() => {
         if (label !== "Location" && location) {
-            debugger
             const find = locationData.find(ele => location == ele.myLocation)
             if (find) {
-                debugger
                 setDropData(find.subLocation)
             }
         }
@@ -93,7 +91,7 @@ export const DropDown = (props) => {
         <>
             <div className="dropdown">
                 <label>{label}</label>
-                <button className="dropbtn">{location}</button>
+                <button style={{textAlign: "left"}} className="dropbtn">{label !== "Location" ? pickupLocation : location}</button>
                 <div className="dropdown-content">
                     {
                         label == "Location" && locationData && locationData.length ? locationData.map(ele => (

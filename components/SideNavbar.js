@@ -76,22 +76,22 @@ function SideNavbar() {
               </Link>
 
               <Link href="/addEditUser">
-              <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditUser') ? ' clickBg' : '')}>
-                <MdOutlineSpaceDashboard className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditUser') ? 'clickColor' : '')} />
-                <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditUser') ? ' clickColor' : '')}>
-                  Add/Edit User
-                </h3>
-              </div>
+                <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditUser') ? ' clickBg' : '')}>
+                  <MdOutlineSpaceDashboard className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditUser') ? 'clickColor' : '')} />
+                  <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditUser') ? ' clickColor' : '')}>
+                    Add/Edit User
+                  </h3>
+                </div>
               </Link>
-              
+
               <Link href="/addEditLocation">
-              <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditLocation') ? ' clickBg' : '')}>
-                <FaRegComments className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditLocation') ? 'clickColor' : '')} />
-                <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditLocation') ? ' clickColor' : '')}>
-                  Add/Edit Location
-                </h3>
-              </div>
-              </Link>             
+                <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditLocation') ? ' clickBg' : '')}>
+                  <FaRegComments className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditLocation') ? 'clickColor' : '')} />
+                  <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditLocation') ? ' clickColor' : '')}>
+                    Add/Edit Location
+                  </h3>
+                </div>
+              </Link>
             </div>
             <div className="border-b border-gray-100 pb-4">
               <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
