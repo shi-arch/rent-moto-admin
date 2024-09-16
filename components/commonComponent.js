@@ -91,10 +91,10 @@ export const DropDown = (props) => {
     }, [location])
     return (
         <>
-            <div class="dropdown">
+            <div className="dropdown">
                 <label>{label}</label>
-                <button class="dropbtn">{location}</button>
-                <div class="dropdown-content">
+                <button className="dropbtn">{location}</button>
+                <div className="dropdown-content">
                     {
                         label == "Location" && locationData && locationData.length ? locationData.map(ele => (
                             <a href="#" onClick={() => {
