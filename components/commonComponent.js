@@ -97,13 +97,13 @@ export const DropDown = (props) => {
                 <div className="dropdown-content">
                     {
                         label == "Location" && locationData && locationData.length ? locationData.map(ele => (
-                            <a href="#" onClick={() => {
+                            <a href="#" key={ele.myLocation} onClick={() => {
                                 setPacket({ ...packet, location: ele.myLocation })
                             }}>{ele.myLocation}</a>
                         ))
                             :
                             dropData && dropData.length ? dropData.map(ele => (
-                                <a href="#" onClick={() => {
+                                <a href="#" key={ele.label} onClick={() => {
                                     setPacket({ ...packet, pickupLocation: ele.value })
                                 }}>{ele.label}</a>
                             ))
