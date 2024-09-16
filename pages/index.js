@@ -2,14 +2,29 @@ import Head from "next/head";
 import SideNavbar from "../components/SideNavbar";
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
-import { InputBox } from "../components/commonComponent";
-import DisplayTable from "../components/table/table";
+import DisplayTable from "../components/table/vehicleTable";
 import { SimpleBackdrop } from "../components/commonComponent";
+import { useEffect } from "react";
+import { getApi, postApi } from "./api/response";
+import { IoIosAddCircle } from "react-icons/io";
+import { Link } from "@mui/material";
 
 export default function Home() {
   const dispatch = useDispatch()
-  const router = useRouter()
-  const { userDetails } = useSelector(state => state)
+  useEffect(() => {
+    (async () => {
+      dispatch({ type: "LOADING", payload: true })
+      const res = await getApi('/getAllVehicles')
+      if (res && res.status == 200) {
+        dispatch({ type: "TOTALDATA", payload: res.data })
+      }
+      const response = await getApi('/getLocations')
+      if (response && response.status == 200) {
+        dispatch({ type: "LOCATIONDATA", payload: response.data })
+      }
+      dispatch({ type: "LOADING", payload: false })
+    })()
+  }, [])
   return (
     <div className="bg-blue-800">
       <SimpleBackdrop />
@@ -22,7 +37,9 @@ export default function Home() {
       <div style={{ padding: "24px 20px 31px 267px", background: "white" }}>
         <div style={{ display: "flex" }}>
           <h1 style={{ fontWeight: "bolder", fontSize: "x-large" }}>VEHICLE LIST</h1>
-          <button style={{ marginLeft: "auto", padding: "12px", background: "black", color: "white", borderRadius: "12px" }}>ADD VEHICLE</button>
+          <Link href="/addEditVehicle" style={{ marginLeft: "auto" }}>
+            <button style={{ marginLeft: "auto", padding: "12px", background: "black", color: "white", borderRadius: "12px", display: "flex" }}><span style={{ marginRight: "5px" }}>ADD VEHICLE </span> <IoIosAddCircle style={{ marginTop: "5px", marginRight: "5px" }} /></button>
+          </Link>
         </div>
         <DisplayTable />
       </div>

@@ -13,8 +13,10 @@ import {
   MdOutlineLogout,
 } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
+import { MdMyLocation } from "react-icons/md";
 import { FaRegComments } from "react-icons/fa";
 import { BiMessageSquareDots } from "react-icons/bi";
+import { LocationIcon } from "./icons";
 
 function SideNavbar() {
   const pathname = useRouter()
@@ -55,43 +57,39 @@ function SideNavbar() {
                 </div>
               </Link>
 
-              <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path == '/locations' ? ' clickBg' : '')}>
-                <CgProfile className={"text-2xl text-gray-600 group-hover:text-white " + (path == '/locations' ? 'clickColor' : '')} />
-                <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path == '/locations' ? ' clickColor' : '')}>
-                  Locations
+              <Link href="/locations">
+                <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path == '/locations' ? ' clickBg' : '')}>
+                  <MdMyLocation className={"text-2xl text-gray-600 group-hover:text-white " + (path == '/locations' ? 'clickColor' : '')} />
+                  <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path == '/locations' ? ' clickColor' : '')}>
+                    Locations
+                  </h3>
+                </div>
+              </Link>
+
+
+              <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditVehicle') ? ' clickBg' : '')}>
+                <FaRegComments className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditVehicle') ?  'clickColor' : '')} />
+                <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditVehicle') ? ' clickColor' : '')}>
+                  Add Edit Vehicle
                 </h3>
               </div>
 
-              <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path == '/addVehicle' ? ' clickBg' : '')}>
-                <FaRegComments className={"text-2xl text-gray-600 group-hover:text-white " + (path == '/addVehicle' ? 'clickColor' : '')} />
-                <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path == '/addVehicle' ? ' clickColor' : '')}>
-                  Add Vehicle
+              <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditUser') ? ' clickBg' : '')}>
+                <MdOutlineSpaceDashboard className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditUser') ? 'clickColor' : '')} />
+                <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditUser') ?  ' clickColor' : '')}>
+                Add Edit User
                 </h3>
               </div>
 
-              <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path == '/editVehicle' ? ' clickBg' : '')}>
-                <MdOutlineSpaceDashboard className={"text-2xl text-gray-600 group-hover:text-white " + (path == '/editVehicle' ? 'clickColor' : '')} />
-                <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path == '/editVehicle' ? ' clickColor' : '')}>
-                  Edit Vehicle
-                </h3>
-              </div>
-
-              <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path == '/addLocation' ? ' clickBg' : '')}>
-                <FaRegComments className={"text-2xl text-gray-600 group-hover:text-white " + (path == '/addLocation' ? 'clickColor' : '')} />
-                <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path == '/addLocation' ? ' clickColor' : '')}>
-                  Add Location
-                </h3>
-              </div>
-
-              <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path == '/editLocation' ? ' clickBg' : '')}>
-                <MdOutlineSpaceDashboard className={"text-2xl text-gray-600 group-hover:text-white " + (path == '/editLocation' ? 'clickColor' : '')} />
-                <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path == '/editLocation' ? ' clickColor' : '')}>
-                  Edit Location
+              <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditLocation') ? ' clickBg' : '')}>
+                <FaRegComments className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditLocation') ? 'clickColor' : '')} />
+                <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditLocation') ? ' clickColor' : '')}>
+                Add Edit Location
                 </h3>
               </div>
             </div>
             {/* setting  */}
-            <div className=" my-4 border-b border-gray-100 pb-4">
+            <div className="border-b border-gray-100 pb-4">
               <div className="flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
                 <MdOutlineSettings className="text-2xl text-gray-600 group-hover:text-white " />
                 <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
