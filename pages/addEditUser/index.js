@@ -6,19 +6,21 @@ import { DropDown, InputBox, SimpleBackdrop } from "../../components/commonCompo
 import { useEffect, useState } from "react";
 import { getApi, postApi } from "../api/response";
 import { IoIosAddCircle } from "react-icons/io";
+import { addOrUpdate } from "../../utils/constants";
 
 export default function Home() {
   const dispatch = useDispatch()
+  const [str, setStr] = useState("Add User")
   const router = useRouter()
-  const { totalData } = useSelector((state) => state)
-  const [packet, setPacket] = useState("")
+  const { totalData, updatePacket } = useSelector((state) => state)
 
   useEffect(() => {
     if (router.query) {
       const query = router.query._id
       const find = totalData.find(o => o._id == query)
+      setStr("Update User")
       if (find) {
-        setPacket(find)
+        dispatch({type: "UPDATEPACKET", payload: find})
       }
     }
   }, [router.query])
@@ -28,36 +30,38 @@ export default function Home() {
       <SideNavbar />
       <div style={{ padding: "24px 20px 31px 267px", background: "white" }}>
         <div style={{ display: "flex" }}>
-          <h1 style={{ fontWeight: "bolder", fontSize: "x-large" }}>ADD OR UPDATE USER</h1>
+          <h1 style={{ fontWeight: "bolder", fontSize: "x-large" }}>{str}</h1>
         </div>
         {
           <div style={{ marginTop: "30px", border: "2.5px solid #737889", padding: "30px", borderRadius: "10px" }}>
             <div className="row" style={{ marginBottom: "20px" }}>
               <div className="col-md-4">
-                <InputBox value={packet.userType} label={"User Type"} placeholder={"user type"} />
+                <InputBox value={updatePacket.userType} label={"User Type"} placeholder={"userType"} />
               </div>
               <div className="col-md-4">
-                <InputBox value={packet.firstName} label={"First Name"} placeholder={"firstName"} />
+                <InputBox value={updatePacket.firstName} label={"First Name"} placeholder={"firstName"} />
               </div>
             </div>
             <div className="row" style={{ marginBottom: "20px" }}>
               <div className="col-md-4">
-                <InputBox value={packet.lastName} label={"Last Name"} placeholder={"Last Name"} />
+                <InputBox value={updatePacket.lastName} label={"Last Name"} placeholder={"lastName"} />
               </div>
               <div className="col-md-4">
-                <InputBox value={packet.email} label={"Email"} placeholder={"Email"} />
+                <InputBox value={updatePacket.email} label={"Email"} placeholder={"email"} />
               </div>
             </div>
             <div className="row" style={{ marginBottom: "20px" }}>
               <div className="col-md-4">
-                <InputBox value={packet.contact} label={"Contact"} placeholder={"contact"} />
+                <InputBox value={updatePacket.contact} label={"Contact"} placeholder={"contact"} />
               </div>
               <div className="col-md-4">
               </div>
               <div className="col-md-4">
               </div>
             </div>
-            <button style={{ marginTop: "20px", width: "50%", padding: "12px", background: "black", color: "white", borderRadius: "12px" }}>{packet ? "Update" : "Add"} User</button>
+            <button onClick={() => {
+              addOrUpdate("/profile")
+            }} style={{ marginTop: "20px", width: "50%", padding: "12px", background: "black", color: "white", borderRadius: "12px" }}>{str}</button>
           </div>
         }
 

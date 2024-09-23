@@ -70,7 +70,7 @@ function SideNavbar() {
                 <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditVehicle') ? ' clickBg' : '')}>
                   <FaRegComments className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditVehicle') ? 'clickColor' : '')} />
                   <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditVehicle') ? ' clickColor' : '')}>
-                    Add/Edit Vehicle
+                    Manage Vehicle
                   </h3>
                 </div>
               </Link>
@@ -79,7 +79,7 @@ function SideNavbar() {
                 <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditUser') ? ' clickBg' : '')}>
                   <MdOutlineSpaceDashboard className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditUser') ? 'clickColor' : '')} />
                   <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditUser') ? ' clickColor' : '')}>
-                    Add/Edit User
+                    Manage User
                   </h3>
                 </div>
               </Link>
@@ -88,7 +88,7 @@ function SideNavbar() {
                 <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditLocation') ? ' clickBg' : '')}>
                   <FaRegComments className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditLocation') ? 'clickColor' : '')} />
                   <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditLocation') ? ' clickColor' : '')}>
-                    Add/Edit Location
+                    Manage Location
                   </h3>
                 </div>
               </Link>

@@ -14,13 +14,13 @@ export default function Home() {
   const { userDetails } = useSelector(state => state)
   useEffect(() => {
     (async () => {
-      dispatch({type: "LOADING", payload: true})
+      dispatch({ type: "LOADING", payload: true })
       const res = await getApi('/getLocations')
-      if(res && res.status == 200){
-        dispatch({type: "TOTALDATA", payload: res.data})
-        dispatch({type: "LOCATIONDATA", payload: res.data})
+      if (res && res.status == 200) {
+        dispatch({ type: "TOTALDATA", payload: res.data })
+        dispatch({ type: "LOCATIONDATA", payload: res.data })
       }
-      dispatch({type: "LOADING", payload: false})
+      dispatch({ type: "LOADING", payload: false })
     })()
   }, [])
   return (
@@ -35,7 +35,7 @@ export default function Home() {
       <div style={{ padding: "24px 20px 31px 267px", background: "white" }}>
         <div style={{ display: "flex" }}>
           <h1 style={{ fontWeight: "bolder", fontSize: "x-large" }}>LOCATION LIST</h1>
-          <button style={{ marginLeft: "auto", padding: "12px", background: "black", color: "white", borderRadius: "12px", display: "flex" }}><span style={{marginRight: "5px"}}>ADD LOCATION </span> <IoIosAddCircle style={{marginTop: "5px", marginRight: "5px"}} /></button>
+          <button style={{ marginLeft: "auto", padding: "12px", background: "black", color: "white", borderRadius: "12px", display: "flex" }}><span style={{ marginRight: "5px" }}>ADD LOCATION </span> <IoIosAddCircle style={{ marginTop: "5px", marginRight: "5px" }} /></button>
         </div>
         <DisplayTable />
       </div>

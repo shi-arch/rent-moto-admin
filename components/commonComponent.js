@@ -9,15 +9,29 @@ import Stack from '@mui/material/Stack';
 import { useEffect, useState } from "react";
 import { EditIcon, DeleteIcon } from "./icons";
 import Link from "next/link";
+import _ from 'lodash'
+import { Grid } from "@mui/material";
 
 
 export const InputBox = (props) => {
-    const { type, placeholder, label, value } = props
+    const dispatch = useDispatch()
+    const { type, placeholder, label, value, readOnly } = props
+    const { updatePacket, checkError } = useSelector((state) => state)
     return (
         <>
             <label>{label}</label>
             <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                <input value={value} style={{ padding: "10px", border: "1px solid", width: "100%", borderRadius: "5px" }} type={type ? type : "text"} placeholder={placeholder} />
+                <input readOnly={readOnly} onChange={(e) => {
+                    let cloneData = _.cloneDeep(updatePacket)
+                    const { value } = e.target
+                    if (cloneData && cloneData[placeholder]) {
+                        cloneData = { ...cloneData, [placeholder]: value }
+                    } else {
+                        cloneData[placeholder] = value
+                    }
+                    dispatch({ type: "UPDATEPACKET", payload: cloneData })
+                }} value={value} style={{ padding: "10px", border: "1px solid", width: "100%", borderRadius: "5px" }} type={type ? type : "text"} placeholder={placeholder} />
+                <span style={{marginTop: "-25px", color: "red", fontSize: "smaller"}}>{checkError && !updatePacket[placeholder] ? 'Please enter the value' : ""}</span>
             </div>
         </>
     )
@@ -33,7 +47,6 @@ export const VehicleTableHeader = () => {
                 <th>ACCESS CHARGE/KM</th>
                 <th>TRANSMISSION TYPE</th>
                 <th>BOOKING COUNT</th>
-                <th>BOOKING AMOUNT</th>
                 <th>VEHICLE NUMBER</th>
                 <th>CITY LOCATION</th>
                 <th>PICKUP LOCATION</th>
@@ -53,9 +66,9 @@ export const LocationTableHeader = () => {
         <>
             <tr>
                 <th></th>
-                <th style={{textAlign: "center"}}>CITY LOCATION</th>
-                <th style={{textAlign: "center"}}>SUB LOCATION</th>
-                <th style={{textAlign: "center"}}>ACTIONS</th>
+                <th style={{ textAlign: "center" }}>CITY LOCATION</th>
+                <th style={{ textAlign: "center" }}>SUB LOCATION</th>
+                <th style={{ textAlign: "center" }}>ACTIONS</th>
             </tr>
 
         </>
@@ -76,39 +89,63 @@ export const UserTableHeader = () => {
 }
 
 export const DropDown = (props) => {
-    const { locationData } = useSelector((state) => state)
-    const { label, location, setPacket, packet, pickupLocation } = props
-    const [dropData, setDropData] = useState([])
+    const dispatch = useDispatch()
+    const { locationData, updatePacket } = useSelector((state) => state)
+    const { label } = props
+    const [subData, setSubData] = useState("")
+
     useEffect(() => {
-        if (label !== "Location" && location) {
-            const find = locationData.find(ele => location == ele.myLocation)
+        if (locationData && locationData.length) {
+            const locationStr = updatePacket?.location
+            const pickupLocation = updatePacket.pickupLocation ? updatePacket.pickupLocation : locationData[0].subLocation[0].label
+            let location = locationStr ? locationStr : locationData[0].myLocation
+            const find = locationData.find(ele => ele.myLocation == location)
             if (find) {
-                setDropData(find.subLocation)
+                setSubData(
+                    <select onChange={(e) => {
+                        const { value } = e.target
+                        let cloneData = _.cloneDeep(updatePacket)
+                        dispatch({ type: "UPDATEPACKET", payload: { ...cloneData, pickupLocation: value } })
+                    }}>
+                        {
+                            find && find.subLocation.map(ele => (
+                                <option selected={ele.value == pickupLocation ? true : false} key={ele.value}>{ele.label}</option>
+                            ))
+                        }
+                    </select>
+                )
             }
         }
-    }, [location])
+    }, [updatePacket, locationData])
+
     return (
         <>
-            <div className="dropdown">
+            <div style={{ display: 'grid' }}>
                 <label>{label}</label>
-                <button style={{textAlign: "left"}} className="dropbtn">{label !== "Location" ? pickupLocation : location}</button>
-                <div className="dropdown-content">
-                    {
-                        label == "Location" && locationData && locationData.length ? locationData.map(ele => (
-                            <a href="#" key={ele.myLocation} onClick={() => {
-                                setPacket({ ...packet, location: ele.myLocation })
-                            }}>{ele.myLocation}</a>
-                        ))
-                            :
-                            dropData && dropData.length ? dropData.map(ele => (
-                                <a href="#" key={ele.label} onClick={() => {
-                                    setPacket({ ...packet, pickupLocation: ele.value })
-                                }}>{ele.label}</a>
-                            ))
-                                : ""
-                    }
-                </div>
+                {
+                    label == "Location" ?
+                        <select onChange={(e) => {
+                            const { value } = e.target
+                            let cloneData = _.cloneDeep(updatePacket)
+                            const find = locationData.find(ele => ele.myLocation == value)
+                            dispatch({ type: "UPDATEPACKET", payload: { ...cloneData, location: value, pickupLocation: find.subLocation[0].label } })
+                        }}>
+                            {
+                                locationData && locationData.length ? locationData.map(ele => (
+                                    <option selected={ele.myLocation == updatePacket.location ? true : false} key={ele.myLocation}>{ele.myLocation}</option>
+                                )) : ""
+                            }
+                        </select> : subData ? subData : ""
+                }
+
             </div>
+            {/* <div className="dropdown">
+                <label>{label}</label>
+                <button style={{ textAlign: "left" }} className="dropbtn">{label !== "Location" ? pickupLocation : location}</button>
+                <div className="dropdown-content">
+                    
+                </div>
+            </div> */}
         </>
     )
 }

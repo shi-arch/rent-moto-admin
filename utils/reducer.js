@@ -40,20 +40,26 @@ const initialState = {
   totalPages: 0,
   totalData: [],
   partialData: [],
-  locationData: []
+  locationData: [],
+  updatePacket: {},
+  checkError: false
 };
 
 const RootReducer = (state = initialState, action) => {
-  switch (action.type) {
+  switch (action.type) {    
+    case 'CHECKERROR':
+      return { ...state, checkError: action.payload };
+      case 'UPDATEPACKET':
+      return { ...state, updatePacket: action.payload };
     case 'LOCATIONDATA':
       return { ...state, locationData: action.payload };
-      case 'TOTALDATA':
+    case 'TOTALDATA':
       return { ...state, totalData: action.payload };
-      case 'PARTIALDATA':
+    case 'PARTIALDATA':
       return { ...state, partialData: action.payload };
     case 'CURRENTPAGE':
       return { ...state, currentPage: action.payload };
-      case 'TOTALPAGES':
+    case 'TOTALPAGES':
       return { ...state, totalPages: action.payload };
     case 'PAYMENTMETHOD':
       return { ...state, paymentMethod: action.payload };

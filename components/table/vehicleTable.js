@@ -13,10 +13,10 @@ export default function DisplayTable() {
                         {
                             partialData && partialData.length ?
                                 partialData.map((o) => {
-                                    const { _id, pickupLocation, location, vehicleNumber, name, url, pricePerday, distanceLimit, accessChargePerKm, transmissionType, brand, bookingCount, BookingEndDateAndTime, BookingStartDateAndTime, bookingAmount } = o
+                                    const { _id, pickupLocation, location, vehicleNumber, name, url, pricePerday, distanceLimit, accessChargePerKm, transmissionType, brand, bookingCount, BookingEndDateAndTime, BookingStartDateAndTime } = o
                                     return < tr key={o.vehicleNumber}>
                                         <td style={{ textAlign: "left", display: "flex" }}>
-                                            <img src={url} />
+                                            <img style={{width: "100px!important"}} src={url} />
                                             <div className="inline-flex flex-col items-start" style={{ marginLeft: "5px" }}>
                                                 <span className="text-small text-inherit">
                                                     {name}
@@ -31,7 +31,6 @@ export default function DisplayTable() {
                                         <td>{accessChargePerKm}</td>
                                         <td>{transmissionType}</td>
                                         <td>{bookingCount}</td>
-                                        <td>{bookingAmount}</td>
                                         <td>{vehicleNumber}</td>
                                         <td>{location}</td>
                                         <td>{pickupLocation}</td>

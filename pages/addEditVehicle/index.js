@@ -6,21 +6,45 @@ import { DropDown, InputBox, SimpleBackdrop } from "../../components/commonCompo
 import { useEffect, useState } from "react";
 import { getApi, postApi } from "../api/response";
 import { IoIosAddCircle } from "react-icons/io";
+import { lowerCase } from "lodash";
+import { addOrUpdate } from "../../utils/constants";
 
 export default function Home() {
   const dispatch = useDispatch()
   const router = useRouter()
-  const { totalData } = useSelector((state) => state)
+  const [str, setStr] = useState("Add Vehicle")
+  const { totalData, locationData, updatePacket } = useSelector((state) => state)
   const [packet, setPacket] = useState("")
 
   useEffect(() => {
-    if (router.query) {
-      const query = router.query._id
-      const find = totalData.find(o => o._id == query)
-      if (find) {
-        setPacket(find)
+    (async () => {
+      let pickupLocation = ""
+      let location = ""
+      let cloneData = _.cloneDeep(updatePacket)
+      if (router.query && !router.query._id) {
+        if (!locationData.length) {
+          dispatch({ type: "LOADING", payload: true })
+          const response = await getApi('/getLocations')
+          if (response && response.status == 200) {
+            location = response.data[0].myLocation
+            pickupLocation = response.data[0].subLocation[0].value
+            dispatch({ type: "LOCATIONDATA", payload: response.data })
+          }
+          dispatch({ type: "LOADING", payload: false })
+        }
+      } else {
+        const query = router.query._id
+        setStr("Update Vehicle")
+        const find = totalData.find(o => o._id == query)
+        if (find) {
+          pickupLocation = find.pickupLocation
+          location = find.location
+          dispatch({ type: "UPDATEPACKET", payload: find })
+          setPacket(find)
+        }
       }
-    }
+    })()
+
   }, [router.query])
   return (
     <div className="bg-blue-800">
@@ -33,55 +57,53 @@ export default function Home() {
       <SideNavbar />
       <div style={{ padding: "24px 20px 31px 267px", background: "white" }}>
         <div style={{ display: "flex" }}>
-          <h1 style={{ fontWeight: "bolder", fontSize: "x-large" }}>ADD OR UPDATE VEHICLE</h1>
+          <h1 style={{ fontWeight: "bolder", fontSize: "x-large" }}>{str}</h1>
         </div>
         {
           <div style={{ marginTop: "30px", border: "2.5px solid #737889", padding: "30px", borderRadius: "10px" }}>
             <div className="row" style={{ marginBottom: "20px" }}>
               <div className="col-md-4">
-                <InputBox value={packet.name} label={"Name"} placeholder={"name"} />
+                <InputBox value={updatePacket.name} label={"Name"} placeholder={"name"} />
               </div>
               <div className="col-md-4">
-                <InputBox value={packet.url} label={"Url"} placeholder={"url"} />
+                <InputBox value={updatePacket.url} label={"Url"} placeholder={"url"} />
               </div>
               <div className="col-md-4">
-                <DropDown setPacket={setPacket} packet={packet} label={"Location"} location={packet.location} />
+                <DropDown label={"Location"} />
               </div>
             </div>
             <div className="row" style={{ marginBottom: "20px" }}>
               <div className="col-md-4">
-                <DropDown setPacket={setPacket} location={packet.location} packet={packet} label={"Sub Location"} pickupLocation={packet.pickupLocation} />
+                <DropDown label={"Sub Location"} />
               </div>
               <div className="col-md-4">
-                <InputBox value={packet.pricePerday} label={"Price Per Day"} placeholder={"pricePerDay"} />
+                <InputBox value={updatePacket.pricePerday} label={"Price Per Day"} placeholder={"pricePerday"} />
               </div>
               <div className="col-md-4">
-                <InputBox value={packet.distanceLimit} label={"Distance Limit"} placeholder={"distanceLimit"} />
+                <InputBox value={updatePacket.distanceLimit} label={"Distance Limit"} placeholder={"distanceLimit"} />
               </div>
             </div>
             <div className="row" style={{ marginBottom: "20px" }}>
               <div className="col-md-4">
-                <InputBox value={packet.accessChargePerKm} label={"Access Charge Per Km"} placeholder={"accessChargePerKm"} />
+                <InputBox value={updatePacket.accessChargePerKm} label={"Access Charge Per Km"} placeholder={"accessChargePerKm"} />
               </div>
               <div className="col-md-4">
-                <InputBox value={packet.vehicleNumber} label={"Vehicle Number"} placeholder={"vehicleNumber"} />
+                <InputBox readOnly={true} value={updatePacket.vehicleNumber} label={"Vehicle Number"} placeholder={"vehicleNumber"} />
               </div>
               <div className="col-md-4">
-                <InputBox value={packet.transmissionType} label={"Transmission Type"} placeholder={"transmissionType"} />
+                <InputBox value={updatePacket.transmissionType} label={"Transmission Type"} placeholder={"transmissionType"} />
               </div>
             </div>
             <div className="row" style={{ marginBottom: "20px" }}>
               <div className="col-md-4">
-                <InputBox value={packet.brand} label={"Brand"} placeholder={"brand"} />
+                <InputBox value={updatePacket.brand} label={"Brand"} placeholder={"brand"} />
               </div>
               <div className="col-md-4">
-                <InputBox value={packet.bookingAmount} label={"Booking Amount"} placeholder={"bookingAmount"} />
-              </div>
-              <div className="col-md-4">
-
               </div>
             </div>
-            <button style={{ marginTop: "20px", width: "50%", padding: "12px", background: "black", color: "white", borderRadius: "12px" }}>{packet ? "Update" : "Add"} Vehicle</button>
+            <button onClick={() => {
+              addOrUpdate("/createVehicle")
+            }} style={{ marginTop: "20px", width: "50%", padding: "12px", background: "black", color: "white", borderRadius: "12px" }}>{str}</button>
           </div>
         }
 

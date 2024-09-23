@@ -1,6 +1,7 @@
-import { postApi } from '../app/response/api';
+import { postApi } from '../pages/api/response';
 import store from './store'
 import moment from "moment";
+import swal from 'sweetalert';
 
 export const getDateTimeInput = async (name, val) => {
     if (name.includes("DATE")) {
@@ -72,6 +73,64 @@ export const apiCall = async () => {
         }
         dispatch({ type: "LOADING", payload: false })
     }
+}
+
+export const addOrUpdate = async (apiurl) => {
+    const dispatch = store.dispatch
+    const pathName = window.location.pathname
+    const { totalData, updatePacket } = store.getState()
+    dispatch({ type: "LOADING", payload: true })
+    dispatch({ type: "CHECKERROR", payload: true })
+    if (pathName.includes("addEditLocation")) {
+        let filter = []
+        if (totalData && totalData.length) {
+            filter = totalData.filter(ele => {
+                if (ele.orId == updatePacket.orId) {
+                    return ele
+                }
+            }).map(function (obj) {
+                let o = { label: obj.subLocation, value: obj.subLocation }
+                if (obj._id == updatePacket._id) {
+                    o = { label: updatePacket.subLocation, value: updatePacket.subLocation }
+                }
+                return o
+            });
+        } else {
+            filter = [{ label: updatePacket.subLocation, value: updatePacket.subLocation }]
+        }
+        if (updatePacket.location && filter.length && updatePacket.url) {
+            await postApi(apiurl, { myLocation: updatePacket.location, subLocation: filter, url: updatePacket.url })
+        } else {
+            dispatch({ type: "LOADING", payload: false })
+            return "";
+        }
+    } else if (pathName.includes("addEditVehicle")) {
+        if (updatePacket.pricePerday && updatePacket.location && updatePacket.name && updatePacket.url &&
+            updatePacket.distanceLimit && updatePacket.accessChargePerKm && updatePacket.vehicleNumber && updatePacket.pickupLocation &&
+            updatePacket.transmissionType && updatePacket.brand
+        ) {
+            await postApi(apiurl, updatePacket)
+        } else {
+            dispatch({ type: "LOADING", payload: false })
+            return "";
+        }
+    } else if (pathName.includes("addEditUser")) {
+        if (updatePacket.userType && updatePacket.firstName && updatePacket.lastName && updatePacket.contact && updatePacket.email && updatePacket._id) {
+            debugger
+            await postApi(apiurl, updatePacket)
+        } else {
+            dispatch({ type: "LOADING", payload: false })
+            return "";
+        }
+    }
+    dispatch({ type: "LOADING", payload: false })
+    let text = "Your data has been " + (window.location.pathname.includes("?") ? "updated " : "added ") + "successfully."
+    swal({
+        title: "Congratulations!",
+        text: text,
+        icon: "success",
+        dangerMode: true,
+    })
 }
 
 export const sortArr = [{ key: "Please select sort type", label: "Please select sort type" }, { key: "lowToHigh", label: "From low to high" }, { key: "highToLow", label: "From high to low" }]
@@ -192,7 +251,7 @@ export const isValid = () => {
             if (startDate == endDate) {
                 let momStartTime = moment(startTime, "hh:mm A");
                 let momEndTime = moment(endTime, "hh:mm A");
-                const expectedTime = new Date(momStartTime).getHours() + new Date(momStartTime).getMinutes() / 60  + .5
+                const expectedTime = new Date(momStartTime).getHours() + new Date(momStartTime).getMinutes() / 60 + .5
                 const selectedTime = new Date(momEndTime).getHours() + new Date(momEndTime).getMinutes() / 60
                 if (selectedTime < expectedTime) {
                     isError = true
@@ -206,7 +265,7 @@ export const isValid = () => {
                 dispatch({ type: "ERROR", payload: "" })
             }
         }
-    }    
+    }
     if (isError) {
         return false
     } else {
