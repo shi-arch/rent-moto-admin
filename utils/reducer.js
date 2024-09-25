@@ -42,14 +42,20 @@ const initialState = {
   partialData: [],
   locationData: [],
   updatePacket: {},
-  checkError: false
+  checkError: false,
+  durationData: [],
+  selectedDuration: ""
 };
 
 const RootReducer = (state = initialState, action) => {
-  switch (action.type) {    
+  switch (action.type) {
+    case 'DURATIONDATA':
+      return { ...state, durationData: action.payload };
+      case 'SELECTEDDURATION':
+      return { ...state, selectedDuration: action.payload };
     case 'CHECKERROR':
       return { ...state, checkError: action.payload };
-      case 'UPDATEPACKET':
+    case 'UPDATEPACKET':
       return { ...state, updatePacket: action.payload };
     case 'LOCATIONDATA':
       return { ...state, locationData: action.payload };

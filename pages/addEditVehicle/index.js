@@ -2,7 +2,7 @@ import Head from "next/head";
 import SideNavbar from "../../components/SideNavbar";
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
-import { DropDown, InputBox, SimpleBackdrop } from "../../components/commonComponent";
+import { DropDown, InputBox, SimpleBackdrop, DropDownData } from "../../components/commonComponent";
 import { useEffect, useState } from "react";
 import { getApi, postApi } from "../api/response";
 import { IoIosAddCircle } from "react-icons/io";
@@ -98,7 +98,10 @@ export default function Home() {
               <div className="col-md-4">
                 <InputBox value={updatePacket.brand} label={"Brand"} placeholder={"brand"} />
               </div>
+              </div>
+            <div className="row" style={{ marginBottom: "20px" }}>
               <div className="col-md-4">
+                <DropDownData label={"Add Duration"} _id={router.query._id} />
               </div>
             </div>
             <button onClick={() => {

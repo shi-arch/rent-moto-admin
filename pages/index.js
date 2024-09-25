@@ -22,6 +22,11 @@ export default function Home() {
       if (response && response.status == 200) {
         dispatch({ type: "LOCATIONDATA", payload: response.data })
       }
+      const durationData = await getApi('/getAllBookingDuration')
+      if (durationData && durationData.status == 200) {
+        dispatch({ type: "DURATIONDATA", payload: durationData.data })
+      }
+      
       dispatch({ type: "LOADING", payload: false })
     })()
   }, [])

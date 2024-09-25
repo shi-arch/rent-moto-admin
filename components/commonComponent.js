@@ -11,6 +11,8 @@ import { EditIcon, DeleteIcon } from "./icons";
 import Link from "next/link";
 import _ from 'lodash'
 import { Grid } from "@mui/material";
+import { apiCall } from "../utils/constants";
+import { postApi } from "../pages/api/response";
 
 
 export const InputBox = (props) => {
@@ -31,7 +33,7 @@ export const InputBox = (props) => {
                     }
                     dispatch({ type: "UPDATEPACKET", payload: cloneData })
                 }} value={value} style={{ padding: "10px", border: "1px solid", width: "100%", borderRadius: "5px" }} type={type ? type : "text"} placeholder={placeholder} />
-                <span style={{marginTop: "-25px", color: "red", fontSize: "smaller"}}>{checkError && !updatePacket[placeholder] ? 'Please enter the value' : ""}</span>
+                <span style={{ marginTop: "-25px", color: "red", fontSize: "smaller" }}>{checkError && !updatePacket[placeholder] ? 'Please enter the value' : ""}</span>
             </div>
         </>
     )
@@ -139,13 +141,37 @@ export const DropDown = (props) => {
                 }
 
             </div>
-            {/* <div className="dropdown">
-                <label>{label}</label>
-                <button style={{ textAlign: "left" }} className="dropbtn">{label !== "Location" ? pickupLocation : location}</button>
-                <div className="dropdown-content">
-                    
-                </div>
-            </div> */}
+        </>
+    )
+}
+
+export const DropDownData = (props) => {
+    const dispatch = useDispatch()
+    const { selectedDuration, durationData } = useSelector((state) => state)
+    const { label, _id } = props
+    
+    return (
+        <>
+            <div style={{ display: 'grid' }}>
+                <label>{label}  (Optional)</label>
+                <select style={{background: "rosybrown"}} onChange={(e) => {
+                    const {value} = e.target
+                    if(value !== "Please select the duration"){
+                        dispatch({ type: "SELECTEDDURATION", payload: value })
+                        dispatch({ type: "LOADING", payload: true })
+                        postApi('/createBookingDuration', {bookingDuration: {label: value}, bookingId: _id })
+                        dispatch({ type: "LOADING", payload: false })
+                    }                    
+                }}>
+                    <option>Please select the duration</option>
+                    {
+                        durationData && durationData.length ? durationData.map(ele => (
+                            <option selected={ele.bookingDuration.label == selectedDuration ? true : false} key={ele.bookingDuration.label}>{ele.bookingDuration.label}</option>
+                        )) : ""
+                    }
+                </select>
+
+            </div>
         </>
     )
 }
