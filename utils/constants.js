@@ -1,7 +1,8 @@
-import { postApi } from '../pages/api/response';
+import { getApi, postApi } from '../pages/api/response';
 import store from './store'
 import moment from "moment";
 import swal from 'sweetalert';
+import axios from "axios";
 
 export const getDateTimeInput = async (name, val) => {
     if (name.includes("DATE")) {
@@ -75,12 +76,71 @@ export const apiCall = async () => {
     }
 }
 
+export const setReduxData = async () => {
+    const dispatch = store.dispatch
+    //let baseUrl = "http://localhost:8080/api/"
+    const baseUrl = "https://rent-moto-back-end-one.vercel.app/api/";
+    const urls = [baseUrl + 'getLocations', baseUrl + 'getAllBookingDuration', baseUrl + 'getAllUsers', baseUrl + 'getAllVehicles', baseUrl + 'getOrders']
+    dispatch({ type: "LOADING", payload: true })
+    let apiData = localStorage.getItem("apiData")
+    if (apiData) {
+        apiData = JSON.parse(apiData)
+    } else {
+        const responses = await Promise.all(
+            urls.map(async url => {
+                const res = await axios.get(url);
+                let exp = url.includes("getLocations") ? "locationData" : url.includes("getAllBookingDuration") ? "durationData" :
+                    url.includes("getOrders") ? "orderData" :
+                    url.includes("getAllUsers") ? "userData" : "vehicleData"
+                return { [exp]: res.data.data }
+            })
+        );
+        if (responses && responses.length) {
+            apiData = responses
+            localStorage.setItem("apiData", JSON.stringify(responses))
+        }
+    }
+    if (apiData && apiData.length) {
+        dispatch({ type: "APIDATA", payload: apiData })
+        for (let i = 0; i < apiData.length; i++) {
+            let o = apiData[i]
+            let key = Object.keys(o)[0]
+            const data = apiData.find(ele => ele[key])
+            dispatch({ type: key.toUpperCase(), payload: data[key] })
+        }
+    }
+    dispatch({ type: "LOADING", payload: false })
+}
+
+export const populateData = () => {
+    const dispatch = store.dispatch
+    const {partialData} = store.getState()
+    let params = new URLSearchParams(window.location.search);
+    let pathName = window.location.pathname
+    let path = pathName.includes("addEditLocation") ? "Location" : pathName.includes("addEditOrder") ? "Order" : pathName.includes("addEditUser") ? "User" : "Vehicle"
+    let _id = params.get('_id')
+    if(_id){
+        const find = partialData.find(o => o._id == _id)
+        if (find) {
+            dispatch({ type: "UPDATEPACKET", payload: find })
+            dispatch({ type: "STR", payload: "Update " + path })
+        }
+    }    
+}
+
 export const addOrUpdate = async (apiurl) => {
     const dispatch = store.dispatch
     const pathName = window.location.pathname
-    const { totalData, updatePacket } = store.getState()
+    const { totalData, updatePacket, apiData, locationData, userData, vehicleData } = store.getState()
+    const { pricePerday, brand, transmissionType, pickupLocation, vehicleNumber,
+        accessChargePerKm, distanceLimit, name, url, userType, firstName,
+        lastName, contact, email
+    } = updatePacket
+    let params = new URLSearchParams(window.location.search);
+    let _id = params.get('_id')
     dispatch({ type: "LOADING", payload: true })
     dispatch({ type: "CHECKERROR", payload: true })
+    let updateDataPacket = ""
     if (pathName.includes("addEditLocation")) {
         let filter = []
         if (totalData && totalData.length) {
@@ -99,24 +159,23 @@ export const addOrUpdate = async (apiurl) => {
             filter = [{ label: updatePacket.subLocation, value: updatePacket.subLocation }]
         }
         if (updatePacket.location && filter.length && updatePacket.url) {
-            await postApi(apiurl, { myLocation: updatePacket.location, subLocation: filter, url: updatePacket.url })
+            updateDataPacket = { myLocation: updatePacket.location, subLocation: filter, url: updatePacket.url }
+            await postApi(apiurl, updateDataPacket)
         } else {
             dispatch({ type: "LOADING", payload: false })
             return "";
         }
     } else if (pathName.includes("addEditVehicle")) {
-        if (updatePacket.pricePerday && updatePacket.location && updatePacket.name && updatePacket.url &&
-            updatePacket.distanceLimit && updatePacket.accessChargePerKm && updatePacket.vehicleNumber && updatePacket.pickupLocation &&
-            updatePacket.transmissionType && updatePacket.brand
-        ) {
+        if (pricePerday && location && name && url && distanceLimit && accessChargePerKm && vehicleNumber && pickupLocation && transmissionType && brand) {
+            updateDataPacket = updatePacket
             await postApi(apiurl, updatePacket)
         } else {
             dispatch({ type: "LOADING", payload: false })
             return "";
         }
     } else if (pathName.includes("addEditUser")) {
-        if (updatePacket.userType && updatePacket.firstName && updatePacket.lastName && updatePacket.contact && updatePacket.email && updatePacket._id) {
-            debugger
+        if (userType && firstName && lastName && contact && email && _id) {
+            updateDataPacket = updatePacket
             await postApi(apiurl, updatePacket)
         } else {
             dispatch({ type: "LOADING", payload: false })
@@ -124,14 +183,33 @@ export const addOrUpdate = async (apiurl) => {
         }
     }
     dispatch({ type: "LOADING", payload: false })
-    let text = "Your data has been " + (window.location.pathname.includes("?") ? "updated " : "added ") + "successfully."
+    let text = "Your data has been " + (window.location.href.includes("?") ? "updated " : "added ") + "successfully."
     swal({
         title: "Congratulations!",
         text: text,
         icon: "success",
         dangerMode: true,
+    }).then(async () => {
+        if (updateDataPacket && window.location.href.includes("?")) {
+            let data = pathName.includes("addEditLocation") ? locationData : pathName.includes("addEditUser") ? userData : vehicleData
+            let str = pathName.includes("addEditLocation") ? "locationData" : pathName.includes("addEditUser") ? "userData" : "vehicleData"
+            let cloneData = _.cloneDeep(data)
+            const findIndex = cloneData.findIndex(ele => ele._id == _id)
+            if (findIndex !== -1) {
+                cloneData.splice(findIndex, 1, updateDataPacket);
+                dispatch({ type: str.toUpperCase(), payload: cloneData })
+                let cloneApiData = _.cloneDeep(apiData)
+                const index = cloneApiData.findIndex(ele => ele[str])
+                if (index !== -1) {
+                    cloneApiData.splice(index, 1, {[str]: cloneData});
+                    dispatch({ type: "APIDATA", payload: cloneApiData })
+                    localStorage.setItem("apiData", JSON.stringify(cloneApiData))
+                }
+            }
+        }
     })
 }
+
 
 export const sortArr = [{ key: "Please select sort type", label: "Please select sort type" }, { key: "lowToHigh", label: "From low to high" }, { key: "highToLow", label: "From high to low" }]
 

@@ -44,13 +44,22 @@ const initialState = {
   updatePacket: {},
   checkError: false,
   durationData: [],
-  selectedDuration: ""
+  apiData: [],
+  selectedDuration: "",
+  orderData: [],
+  str: ""
 };
 
 const RootReducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'STR':
+      return { ...state, str: action.payload };
+      case 'APIDATA':
+      return { ...state, apiData: action.payload };
     case 'DURATIONDATA':
       return { ...state, durationData: action.payload };
+      case 'ORDERDATA':
+      return { ...state, orderData: action.payload };
       case 'SELECTEDDURATION':
       return { ...state, selectedDuration: action.payload };
     case 'CHECKERROR':
@@ -59,6 +68,8 @@ const RootReducer = (state = initialState, action) => {
       return { ...state, updatePacket: action.payload };
     case 'LOCATIONDATA':
       return { ...state, locationData: action.payload };
+      case 'USERDATA':
+      return { ...state, userData: action.payload };
     case 'TOTALDATA':
       return { ...state, totalData: action.payload };
     case 'PARTIALDATA':
@@ -109,7 +120,7 @@ const RootReducer = (state = initialState, action) => {
       return { ...state, showPayModel: action.payload };
     case 'ENDDATE':
       return { ...state, endDate: action.payload };
-    case 'VEHICLADATA':
+    case 'VEHICLEDATA':
       return { ...state, vehicleData: action.payload };
     case 'SELECTEDVEHICLE':
       return { ...state, selectedVehicle: action.payload };

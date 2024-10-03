@@ -1,28 +1,19 @@
-import Head from "next/head";
 import SideNavbar from "../../components/SideNavbar";
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
-import { DropDown, InputBox, SimpleBackdrop } from "../../components/commonComponent";
-import { useEffect, useState } from "react";
-import { IoIosAddCircle } from "react-icons/io";
-import { addOrUpdate } from "../../utils/constants";
+import { InputBox, SimpleBackdrop } from "../../components/commonComponent";
+import { useEffect } from "react";
+import { addOrUpdate, populateData } from "../../utils/constants";
 
 export default function Home() {
   const dispatch = useDispatch()
   const router = useRouter()
-  const [str, setStr] = useState("Add Location")
-  const { totalData, updatePacket } = useSelector((state) => state)
+  const { updatePacket, str } = useSelector((state) => state)
 
   useEffect(() => {
-    if (Object.keys(router.query).length) {
-      const query = router.query._id
-      const find = totalData.find(o => o._id == query)
-      if (find) {
-        dispatch({ type: "UPDATEPACKET", payload: find })
-      }
-      setStr("Update Location")
-    }
+    populateData()
   }, [router.query])
+  
   useEffect(() => {
     return () => {
       dispatch({ type: "CHECKERROR", payload: false })

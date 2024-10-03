@@ -1,6 +1,6 @@
 import Head from "next/head";
 import SideNavbar from "../../components/SideNavbar";
-import DisplayTable from "../../components/table/userTable";
+import DisplayTable from "../../components/table/orderTable";
 import { SimpleBackdrop } from "../../components/commonComponent";
 import { IoIosAddCircle } from "react-icons/io";
 import Link from "next/link";
@@ -28,9 +28,9 @@ export default function Home() {
       <SideNavbar />
       <div style={{ padding: "24px 20px 31px 267px", background: "white" }}>
         <div style={{ display: "flex" }}>
-          <h1 style={{ fontWeight: "bolder", fontSize: "x-large" }}>USER LIST</h1>
+          <h1 style={{ fontWeight: "bolder", fontSize: "x-large" }}>ORDER LIST</h1>
           <Link href="/addEditUser" style={{ marginLeft: "auto" }}>
-            <button style={{ marginLeft: "auto", padding: "12px", background: "black", color: "white", borderRadius: "12px", display: "flex" }}><span style={{ marginRight: "5px" }}>ADD USER </span> <IoIosAddCircle style={{ marginTop: "5px", marginRight: "5px" }} /></button>
+            <button style={{ marginLeft: "auto", padding: "12px", background: "black", color: "white", borderRadius: "12px", display: "flex" }}><span style={{ marginRight: "5px" }}>ADD ORDER </span> <IoIosAddCircle style={{ marginTop: "5px", marginRight: "5px" }} /></button>
           </Link>
         </div>
         <DisplayTable />

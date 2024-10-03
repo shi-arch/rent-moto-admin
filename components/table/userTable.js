@@ -1,6 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { ActionComp, PaginationComp, UserTableHeader } from "../commonComponent";
+import Profile from '../../utils/images/Profile.png'
+import Image from 'next/image';
+
 
 export default function DisplayTable() {
     const { partialData } = useSelector((state) => state)
@@ -17,7 +20,7 @@ export default function DisplayTable() {
                                     const { userType, firstName, lastName, contact, email, _id } = o
                                     return < tr key={o.vehicleNumber}>
                                         <td style={{ textAlign: "left", display: "flex" }}>
-                                            <img src={'https://i.pravatar.cc/150?u=a04258114e29026702d'} />
+                                            <Image src={Profile} />
                                             <div className="inline-flex flex-col items-start" style={{ marginLeft: "5px" }}>
                                                 <span className="text-small text-inherit">
                                                     {firstName}

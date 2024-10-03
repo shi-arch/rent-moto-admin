@@ -90,6 +90,26 @@ export const UserTableHeader = () => {
     )
 }
 
+export const OrderTableHeader = () => {
+    return (
+        <tr>
+            <th>NAME</th>
+            <th>USER NAME</th>
+            <th>LOCATION</th>
+            <th>PICKUP LOCATION</th>
+            <th>START DATE</th>
+            <th>START TIME</th>
+            <th>END DATE</th>
+            <th>END TIME</th>
+            <th>PAYMENT METHOD</th>
+            <th>PAYMENT STATUS</th>
+            <th>EMAIL</th>
+            <th>CONTACT</th>
+            <th>SUBMITTED DOCUMENT</th>
+        </tr>
+    )
+}
+
 export const DropDown = (props) => {
     const dispatch = useDispatch()
     const { locationData, updatePacket } = useSelector((state) => state)
@@ -176,11 +196,20 @@ export const DropDownData = (props) => {
     )
 }
 
-export const PaginationComp = () => {
+export const PaginationComp = () => {    
     const dispatch = useDispatch()
-    const { totalPages, totalData, currentPage } = useSelector((state) => state)
+    const { totalPages, currentPage, apiData, userData, vehicleData, locationData , orderData} = useSelector((state) => state)    
+    const [totalData, setTotalData] = useState([])
+
     useEffect(() => {
-        if (totalData && totalData.length) {
+        if(apiData && apiData.length){
+            let pathName = window.location.pathname
+            setTotalData(pathName.includes("location") ? locationData : pathName.includes("user") ? userData : pathName.includes("order") ? orderData : vehicleData)
+        }        
+    }, [apiData])
+
+    useEffect(() => {
+        if(totalData.length){
             let cloneTotalData = JSON.parse(JSON.stringify(totalData))
             let data = []
             if (currentPage == 1) {

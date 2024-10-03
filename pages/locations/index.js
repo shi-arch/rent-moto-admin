@@ -1,26 +1,19 @@
 import Head from "next/head";
 import SideNavbar from "../../components/SideNavbar";
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter } from "next/router";
 import DisplayTable from "../../components/table/locationTable";
 import { SimpleBackdrop } from "../../components/commonComponent";
-import { useEffect } from "react";
-import { getApi, postApi } from "../api/response";
 import { IoIosAddCircle } from "react-icons/io";
+import { useEffect } from "react";
+import { setReduxData } from "../../utils/constants";
+import { useSelector } from "react-redux";
 
 export default function Home() {
-  const dispatch = useDispatch()
-  const router = useRouter()
-  const { userDetails } = useSelector(state => state)
+  const {apiData} = useSelector(state => state)
   useEffect(() => {
     (async () => {
-      dispatch({ type: "LOADING", payload: true })
-      const res = await getApi('/getLocations')
-      if (res && res.status == 200) {
-        dispatch({ type: "TOTALDATA", payload: res.data })
-        dispatch({ type: "LOCATIONDATA", payload: res.data })
-      }
-      dispatch({ type: "LOADING", payload: false })
+      if(apiData && !apiData.length){
+        await setReduxData()
+      }            
     })()
   }, [])
   return (

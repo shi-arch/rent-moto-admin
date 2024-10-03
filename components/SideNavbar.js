@@ -15,7 +15,8 @@ import {
 import { CgProfile } from "react-icons/cg";
 import { MdMyLocation } from "react-icons/md";
 import { FaRegComments } from "react-icons/fa";
-import { BiMessageSquareDots } from "react-icons/bi";
+import { BiMessageSquareDots, BiBowlHot } from "react-icons/bi";
+//import { AiFillProduct } from "react-icons/ai";
 import { LocationIcon } from "./icons";
 
 function SideNavbar() {
@@ -66,6 +67,15 @@ function SideNavbar() {
                 </div>
               </Link>
 
+              <Link href="/orders">
+                <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path == '/locations' ? ' clickBg' : '')}>
+                  <BiBowlHot className={"text-2xl text-gray-600 group-hover:text-white " + (path == '/locations' ? 'clickColor' : '')} />
+                  <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path == '/locations' ? ' clickColor' : '')}>
+                    Orders
+                  </h3>
+                </div>
+              </Link>
+
               <Link href="/addEditVehicle">
                 <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditVehicle') ? ' clickBg' : '')}>
                   <FaRegComments className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditVehicle') ? 'clickColor' : '')} />
@@ -89,6 +99,14 @@ function SideNavbar() {
                   <FaRegComments className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditLocation') ? 'clickColor' : '')} />
                   <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditLocation') ? ' clickColor' : '')}>
                     Manage Location
+                  </h3>
+                </div>
+              </Link>
+              <Link href="/addEditLocation">
+                <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditLocation') ? ' clickBg' : '')}>
+                  <BiMessageSquareDots className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditLocation') ? 'clickColor' : '')} />
+                  <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditLocation') ? ' clickColor' : '')}>
+                    Manage Orders
                   </h3>
                 </div>
               </Link>

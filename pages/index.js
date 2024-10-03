@@ -8,26 +8,15 @@ import { useEffect } from "react";
 import { getApi, postApi } from "./api/response";
 import { IoIosAddCircle } from "react-icons/io";
 import { Link } from "@mui/material";
+import { setReduxData } from "../utils/constants";
 
 export default function Home() {
-  const dispatch = useDispatch()
+  const {apiData} = useSelector(state => state)
   useEffect(() => {
     (async () => {
-      dispatch({ type: "LOADING", payload: true })
-      const res = await getApi('/getAllVehicles')
-      if (res && res.status == 200) {
-        dispatch({ type: "TOTALDATA", payload: res.data })
-      }
-      const response = await getApi('/getLocations')
-      if (response && response.status == 200) {
-        dispatch({ type: "LOCATIONDATA", payload: response.data })
-      }
-      const durationData = await getApi('/getAllBookingDuration')
-      if (durationData && durationData.status == 200) {
-        dispatch({ type: "DURATIONDATA", payload: durationData.data })
-      }
-      
-      dispatch({ type: "LOADING", payload: false })
+      if(apiData && !apiData.length){
+        await setReduxData()
+      }            
     })()
   }, [])
   return (

@@ -1,29 +1,18 @@
-import Head from "next/head";
 import SideNavbar from "../../components/SideNavbar";
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useRouter } from "next/router";
-import { DropDown, InputBox, SimpleBackdrop } from "../../components/commonComponent";
-import { useEffect, useState } from "react";
-import { getApi, postApi } from "../api/response";
-import { IoIosAddCircle } from "react-icons/io";
-import { addOrUpdate } from "../../utils/constants";
+import { InputBox, SimpleBackdrop } from "../../components/commonComponent";
+import { useEffect } from "react";
+import { addOrUpdate, populateData } from "../../utils/constants";
 
 export default function Home() {
-  const dispatch = useDispatch()
-  const [str, setStr] = useState("Add User")
   const router = useRouter()
-  const { totalData, updatePacket } = useSelector((state) => state)
+  const { updatePacket, str } = useSelector((state) => state)
 
   useEffect(() => {
-    if (router.query) {
-      const query = router.query._id
-      const find = totalData.find(o => o._id == query)
-      setStr("Update User")
-      if (find) {
-        dispatch({type: "UPDATEPACKET", payload: find})
-      }
-    }
+    populateData()
   }, [router.query])
+
   return (
     <div className="bg-blue-800">
       <SimpleBackdrop />
