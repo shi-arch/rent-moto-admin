@@ -9,7 +9,7 @@ export default function DisplayTable() {
             <div style={{ overflow: "scroll", margin: "40px 0px" }}>
                 <table>
                     <tbody>
-                    <OrderTableHeader />
+                        <OrderTableHeader />
                         {
                             partialData && partialData.length ?
                                 partialData.map((o) => {
@@ -17,23 +17,50 @@ export default function DisplayTable() {
                                         paymentStatus, paymentMethod, userName, email, contact, submittedDocument, _id, vehicleImage } = o
                                     return < tr key={o.vehicleNumber}>
                                         <td style={{ textAlign: "left", display: "flex" }}>
-                                            <img style={{width: "100px!important"}} src={vehicleImage} />
-                                            <div className="inline-flex flex-col items-start" style={{ marginLeft: "5px" }}>
-                                                <span className="text-small text-inherit">
-                                                    {vehicleName}
-                                                </span>
-                                                <span className="text-small text-inherit">
-                                                    {vehicleNumber}
-                                                </span>
+                                            <div style={{ textAlign: "left", display: "flex" }}>
+                                                <img style={{ width: "100px!important" }} src={vehicleImage} />
+                                                <div className="inline-flex flex-col items-start" style={{ marginLeft: "5px" }}>
+                                                    <span className="text-small text-inherit">
+                                                        {vehicleName}
+                                                    </span>
+                                                    <span className="text-small text-inherit">
+                                                        {vehicleNumber}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </td>
-                                        <td>{userName}</td>
+                                        <td>
+                                            <div style={{ display: "ruby-text", marginTop: "37px" }}>
+                                                {userName}
+                                            </div>
+                                        </td>
                                         <td>{location}</td>
-                                        <td>{pickupLocation}</td>
-                                        <td>{startDate}</td>
-                                        <td>{startTime}</td>
-                                        <td>{endDate}</td>
-                                        <td>{endTime}</td>
+                                        <td>
+                                            <div style={{ display: "ruby-text", marginTop: "37px" }}>
+                                                {pickupLocation}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style={{ display: "ruby-text", marginTop: "37px" }}>
+                                                {startDate}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style={{ display: "ruby-text", marginTop: "37px" }}>
+                                                {startTime}
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div style={{ display: "ruby-text", marginTop: "37px" }}>
+                                                {endDate}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style={{ display: "ruby-text", marginTop: "37px" }}>
+                                                {endTime}
+                                            </div>
+                                        </td>
                                         <td>{paymentMethod}</td>
                                         <td>{paymentStatus}</td>
                                         <td>{email}</td>

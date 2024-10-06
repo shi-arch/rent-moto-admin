@@ -9,14 +9,14 @@ export default function DisplayTable() {
             <div style={{ overflow: "scroll", margin: "40px 0px" }}>
                 <table>
                     <tbody>
-                    <VehicleTableHeader />
+                        <VehicleTableHeader />
                         {
                             partialData && partialData.length ?
                                 partialData.map((o) => {
                                     const { _id, pickupLocation, location, vehicleNumber, name, url, pricePerday, distanceLimit, accessChargePerKm, transmissionType, brand, bookingCount, BookingEndDateAndTime, BookingStartDateAndTime } = o
                                     return < tr key={o.vehicleNumber}>
                                         <td style={{ textAlign: "left", display: "flex" }}>
-                                            <img style={{width: "100px!important"}} src={url} />
+                                            <img style={{ width: "100px!important" }} src={url} />
                                             <div className="inline-flex flex-col items-start" style={{ marginLeft: "5px" }}>
                                                 <span className="text-small text-inherit">
                                                     {name}
@@ -31,9 +31,9 @@ export default function DisplayTable() {
                                         <td>{accessChargePerKm}</td>
                                         <td>{transmissionType}</td>
                                         <td>{bookingCount}</td>
-                                        <td>{vehicleNumber}</td>
+                                        <td style={{display: "ruby-text", marginBottom: "-22px"}}>{vehicleNumber}</td>
                                         <td>{location}</td>
-                                        <td>{pickupLocation}</td>
+                                        <td style={{display: "ruby-text", marginBottom: "-22px"}}>{pickupLocation}</td>
                                         <td>{BookingStartDateAndTime ? BookingStartDateAndTime.startDate : ""}</td>
                                         <td>{BookingStartDateAndTime ? BookingStartDateAndTime.startTime : ""}</td>
                                         <td>{BookingEndDateAndTime ? BookingEndDateAndTime.endDate : ""}</td>

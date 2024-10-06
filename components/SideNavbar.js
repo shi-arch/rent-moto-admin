@@ -68,9 +68,9 @@ function SideNavbar() {
               </Link>
 
               <Link href="/orders">
-                <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path == '/locations' ? ' clickBg' : '')}>
-                  <BiBowlHot className={"text-2xl text-gray-600 group-hover:text-white " + (path == '/locations' ? 'clickColor' : '')} />
-                  <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path == '/locations' ? ' clickColor' : '')}>
+                <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path == '/orders' ? ' clickBg' : '')}>
+                  <BiBowlHot className={"text-2xl text-gray-600 group-hover:text-white " + (path == '/orders' ? 'clickColor' : '')} />
+                  <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path == '/orders' ? ' clickColor' : '')}>
                     Orders
                   </h3>
                 </div>
@@ -94,10 +94,10 @@ function SideNavbar() {
                 </div>
               </Link>
 
-              <Link href="/addEditLocation">
-                <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditLocation') ? ' clickBg' : '')}>
-                  <FaRegComments className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditLocation') ? 'clickColor' : '')} />
-                  <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditLocation') ? ' clickColor' : '')}>
+              <Link href="/addEditOrder">
+                <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditOrder') ? ' clickBg' : '')}>
+                  <FaRegComments className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditOrder') ? 'clickColor' : '')} />
+                  <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditOrder') ? ' clickColor' : '')}>
                     Manage Location
                   </h3>
                 </div>
