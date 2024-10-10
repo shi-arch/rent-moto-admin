@@ -1,9 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ActionComp, PaginationComp, VehicleTableHeader } from "../commonComponent";
 
 export default function DisplayTable() {
-    const { partialData } = useSelector((state) => state)
+    const { apiData } = useSelector((state) => state)
+    const [data, setData] = useState([])
+    useEffect(() => {
+        if(apiData && apiData.length){
+            const find = apiData.find(ele => ele.vehicleData)
+            if(find){
+                setData(find.vehicleData)
+            }
+        }
+    }, [apiData])
     return (
         <>
             <div style={{ overflow: "scroll", margin: "40px 0px" }}>
@@ -11,8 +20,8 @@ export default function DisplayTable() {
                     <tbody>
                         <VehicleTableHeader />
                         {
-                            partialData && partialData.length ?
-                                partialData.map((o) => {
+                            data.length ?
+                                data.map((o) => {
                                     const { _id, pickupLocation, location, vehicleNumber, name, url, pricePerday, distanceLimit, accessChargePerKm, transmissionType, brand, bookingCount, BookingEndDateAndTime, BookingStartDateAndTime } = o
                                     return < tr key={o.vehicleNumber}>
                                         <td style={{ textAlign: "left", display: "flex" }}>
@@ -31,9 +40,9 @@ export default function DisplayTable() {
                                         <td>{accessChargePerKm}</td>
                                         <td>{transmissionType}</td>
                                         <td>{bookingCount}</td>
-                                        <td style={{display: "ruby-text", marginBottom: "-22px"}}>{vehicleNumber}</td>
+                                        <td style={{ display: "ruby-text", marginBottom: "-22px" }}>{vehicleNumber}</td>
                                         <td>{location}</td>
-                                        <td style={{display: "ruby-text", marginBottom: "-22px"}}>{pickupLocation}</td>
+                                        <td style={{ display: "ruby-text", marginBottom: "-22px" }}>{pickupLocation}</td>
                                         <td>{BookingStartDateAndTime ? BookingStartDateAndTime.startDate : ""}</td>
                                         <td>{BookingStartDateAndTime ? BookingStartDateAndTime.startTime : ""}</td>
                                         <td>{BookingEndDateAndTime ? BookingEndDateAndTime.endDate : ""}</td>

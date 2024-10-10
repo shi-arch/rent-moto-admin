@@ -47,11 +47,14 @@ const initialState = {
   apiData: [],
   selectedDuration: "",
   orderData: [],
+  vehicleCount: 0,
   str: ""
 };
 
 const RootReducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'VEHICLECOUNT':
+      return { ...state, vehicleCount: action.payload };
     case 'STR':
       return { ...state, str: action.payload };
       case 'APIDATA':

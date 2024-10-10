@@ -80,28 +80,31 @@ export const setReduxData = async () => {
     const dispatch = store.dispatch
     //let baseUrl = "http://localhost:8080/api/"
     const baseUrl = "https://rent-moto-back-end-one.vercel.app/api/";
-    const urls = [baseUrl + 'getLocations', baseUrl + 'getAllBookingDuration', baseUrl + 'getAllUsers', baseUrl + 'getAllVehicles', baseUrl + 'getOrders']
+    const urls = [baseUrl + 'getLocations', baseUrl + 'getAllBookingDuration', baseUrl + 'getAllUsers', baseUrl + 'getOrders']
     dispatch({ type: "LOADING", payload: true })
-    let apiData = localStorage.getItem("apiData")
-    if (apiData) {
-        apiData = JSON.parse(apiData)
-    } else {
+    // let apiData = localStorage.getItem("apiData")
+    // if (apiData) {
+    //     apiData = JSON.parse(apiData)
+    //} else {
         const responses = await Promise.all(
             urls.map(async url => {
                 const res = await axios.get(url);
                 let exp = url.includes("getLocations") ? "locationData" : url.includes("getAllBookingDuration") ? "durationData" :
-                    url.includes("getOrders") ? "orderData" :
-                    url.includes("getAllUsers") ? "userData" : "vehicleData"
+                    url.includes("getOrders") ? "orderData" : "userData"
                 return { [exp]: res.data.data }
             })
         );
-        if (responses && responses.length) {
-            apiData = responses
-            localStorage.setItem("apiData", JSON.stringify(responses))
+        let apiData = []
+        const vehicleRes = await postApi('/getAllVehicles', {limit: 10, page: 1})
+        if (responses && responses.length && vehicleRes && vehicleRes.data && vehicleRes.data.length) {
+            apiData = responses.concat({"vehicleData": vehicleRes.data})
+            dispatch({type: "VEHICLECOUNT", payload: vehicleRes.count})
+            //localStorage.setItem("apiData", JSON.stringify(responses))
         }
-    }
+    //}
     if (apiData && apiData.length) {
         dispatch({ type: "APIDATA", payload: apiData })
+        debugger
         for (let i = 0; i < apiData.length; i++) {
             let o = apiData[i]
             let key = Object.keys(o)[0]

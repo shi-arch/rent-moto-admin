@@ -169,19 +169,19 @@ export const DropDownData = (props) => {
     const dispatch = useDispatch()
     const { selectedDuration, durationData } = useSelector((state) => state)
     const { label, _id } = props
-    
+
     return (
         <>
             <div style={{ display: 'grid' }}>
                 <label>{label}  (Optional)</label>
-                <select style={{background: "rosybrown"}} onChange={(e) => {
-                    const {value} = e.target
-                    if(value !== "Please select the duration"){
+                <select style={{ background: "rosybrown" }} onChange={(e) => {
+                    const { value } = e.target
+                    if (value !== "Please select the duration") {
                         dispatch({ type: "SELECTEDDURATION", payload: value })
                         dispatch({ type: "LOADING", payload: true })
-                        postApi('/createBookingDuration', {bookingDuration: {label: value}, bookingId: _id })
+                        postApi('/createBookingDuration', { bookingDuration: { label: value }, bookingId: _id })
                         dispatch({ type: "LOADING", payload: false })
-                    }                    
+                    }
                 }}>
                     <option>Please select the duration</option>
                     {
@@ -196,20 +196,20 @@ export const DropDownData = (props) => {
     )
 }
 
-export const PaginationComp = () => {    
+export const PaginationComp = () => {
     const dispatch = useDispatch()
-    const { totalPages, currentPage, apiData, userData, vehicleData, locationData , orderData} = useSelector((state) => state)    
+    const { totalPages, currentPage, apiData, userData, vehicleData, locationData, orderData, vehicleCount } = useSelector((state) => state)
     const [totalData, setTotalData] = useState([])
 
     useEffect(() => {
-        if(apiData && apiData.length){
+        if (apiData && apiData.length) {
             let pathName = window.location.pathname
             setTotalData(pathName.includes("location") ? locationData : pathName.includes("user") ? userData : pathName.includes("order") ? orderData : vehicleData)
-        }        
+        }
     }, [apiData])
 
     useEffect(() => {
-        if(totalData.length){
+        if (totalData.length) {
             let cloneTotalData = JSON.parse(JSON.stringify(totalData))
             let data = []
             if (currentPage == 1) {
@@ -231,15 +231,21 @@ export const PaginationComp = () => {
             <div className="col-md-4">
                 <Stack spacing={2}>
                     <Pagination
-                        onChange={(e, pgNo) => {
+                        onChange={async (e, pgNo) => {
                             dispatch({ type: "CURRENTPAGE", payload: pgNo })
-
+                            if (window.location.pathname == "/") {
+                                const vehicleRes = await postApi('/getAllVehicles', { limit: 10, page: pgNo })
+                                let cloneApiData = JSON.parse(JSON.stringify(apiData))
+                                cloneApiData.splice(cloneApiData.findIndex(ele => ele.vehicleData), 1)
+                                let apiCompiledData = cloneApiData.concat({ "vehicleData": vehicleRes.data })
+                                dispatch({ type: "APIDATA", payload: apiCompiledData })
+                            }
                         }}
-                        count={totalPages} variant="outlined" shape="rounded" />
+                        count={vehicleCount && window.location.pathname == "/" ? Math.trunc(vehicleCount / 10) + 1 : totalPages} variant="outlined" shape="rounded" />
                 </Stack>
             </div>
             <div className="col-md-4">
-                <p>Total Page Count: {totalPages}</p>
+                <p>Total Page Count: {vehicleCount && window.location.pathname == "/" ? Math.trunc(vehicleCount / 10) + 1 : totalPages}</p>
             </div>
             <div className="col-md-4">
                 <p>Selected Page: {currentPage}</p>
