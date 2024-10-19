@@ -3,22 +3,26 @@ import SideNavbar from "../components/SideNavbar";
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 import DisplayTable from "../components/table/vehicleTable";
-import { SimpleBackdrop } from "../components/commonComponent";
+import { CardComponent, SimpleBackdrop } from "../components/commonComponent";
 import { useEffect } from "react";
 import { getApi, postApi } from "./api/response";
 import { IoIosAddCircle } from "react-icons/io";
 import { Link } from "@mui/material";
 import { setReduxData } from "../utils/constants";
+import Image from "next/image";
 
 export default function Home() {
-  const {apiData} = useSelector(state => state)
+  const { apiData, vehicleCount } = useSelector(state => state)
   useEffect(() => {
     (async () => {
-      if(apiData && !apiData.length){
+      if (apiData && !apiData.length) {
         await setReduxData()
-      }            
+      }
     })()
   }, [])
+  useEffect(() => {
+    console.log(apiData)
+  }, [apiData])
   return (
     <div className="bg-blue-800">
       <SimpleBackdrop />
@@ -28,14 +32,29 @@ export default function Home() {
         <link rel="icon" href="/pro.ico" />
       </Head>
       <SideNavbar />
-      <div style={{ padding: "24px 20px 31px 267px", background: "white" }}>
-        <div style={{ display: "flex" }}>
-          <h1 style={{ fontWeight: "bolder", fontSize: "x-large" }}>VEHICLE LIST</h1>
-          <Link href="/addEditVehicle" style={{ marginLeft: "auto" }}>
-            <button style={{ marginLeft: "auto", padding: "12px", background: "black", color: "white", borderRadius: "12px", display: "flex" }}><span style={{ marginRight: "5px" }}>ADD VEHICLE </span> <IoIosAddCircle style={{ marginTop: "5px", marginRight: "5px" }} /></button>
-          </Link>
-        </div>
-        <DisplayTable />
+      <div style={{ padding: "108px 20px 31px 267px", background: "white"}}>
+        <div className="row" style={{marginBottom: "83px"}}>
+          <div className="col-md-4">
+            <CardComponent name={"VEHICLES"}/>
+          </div>
+          <div className="col-md-4">
+            <CardComponent name={"USERS"} />
+          </div>
+          <div className="col-md-4">
+            <CardComponent name={"LOCATIONS"} />
+          </div>
+        </div>  
+        <div className="row" style={{marginBottom: "83px"}}>
+          <div className="col-md-4">
+            <CardComponent name={"ORDERS"} />
+          </div>
+          {/* <div className="col-md-4">
+            <CardComponent name={"USERS"} count={200} />
+          </div>
+          <div className="col-md-4">
+            <CardComponent name={"LOCATIONS"} count={200} />
+          </div> */}
+        </div>        
       </div>
     </div>
   );

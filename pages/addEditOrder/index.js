@@ -1,18 +1,26 @@
 import Head from "next/head";
 import SideNavbar from "../../components/SideNavbar";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 import { DropDown, InputBox, SimpleBackdrop, DropDownData } from "../../components/commonComponent";
 import { useEffect } from "react";
 import { addOrUpdate, populateData } from "../../utils/constants";
 
 export default function Home() {
+  const dispatch = useDispatch()
   const router = useRouter()
-  const { updatePacket, str } = useSelector((state) => state)
+  const { updatePacket, str, gotu } = useSelector((state) => state)
 
   useEffect(() => {
     populateData()
   }, [router.query])
+
+  useEffect(() => {
+    if(gotu){
+      dispatch({type: "GOTU", payload: false})
+      router.push("/orders")      
+    }    
+  }, [gotu]);
   return (
     <div className="bg-blue-800">
       <SimpleBackdrop />

@@ -4,7 +4,7 @@ import { LocationTableHeader, PaginationComp, ActionComp } from "../commonCompon
 
 export default function DisplayTable() {
     const dispatch = useDispatch()
-    const { totalData, locationData } = useSelector((state) => state)
+    const { totalData, locationData, partialData } = useSelector((state) => state)
     const [data, setData] = useState([])
     useEffect(() => {
         if (locationData && locationData.length) {
@@ -17,9 +17,9 @@ export default function DisplayTable() {
                         arr.push({ location: locationData[i].myLocation, subLocation: sLoca, url: locationData[i].url, _id: (Math.random() + 1).toString(36).substring(3), orId: obj._id })
                     }
                 }
-            }            
+            }
             setData(arr)
-            dispatch({type: "TOTALDATA", payload: arr})
+            dispatch({ type: "TOTALDATA", payload: arr })
         }
 
     }, [locationData])
@@ -30,9 +30,9 @@ export default function DisplayTable() {
                     <tbody>
                         <LocationTableHeader />
                         {
-                            data.length ?
-                                data.map((o) => {
-                                    const { location, subLocation, url, _id } = o
+                            partialData && partialData.length ?
+                                partialData.map((o) => {
+                                    const { location, subLocation, url, _id, orId } = o
                                     return < tr key={o.vehicleNumber}>
                                         <td style={{ textAlign: "left" }}>
                                             <img style={{ width: "185px!important" }} src={url} />
@@ -40,7 +40,7 @@ export default function DisplayTable() {
                                         <td>{location}</td>
                                         <td>{subLocation}</td>
                                         <td>
-                                            <ActionComp path={"/addEditLocation"} _id={_id} />
+                                            <ActionComp orId={orId} strToDelete={subLocation} path={"/addEditLocation"} _id={_id} />
                                         </td>
                                     </tr>
                                 }) : ""

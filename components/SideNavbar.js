@@ -14,7 +14,7 @@ import {
 } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { MdMyLocation } from "react-icons/md";
-import { FaRegComments } from "react-icons/fa";
+import { FaRegComments, FaMotorcycle } from "react-icons/fa";
 import { BiMessageSquareDots, BiBowlHot } from "react-icons/bi";
 //import { AiFillProduct } from "react-icons/ai";
 import { LocationIcon } from "./icons";
@@ -45,6 +45,15 @@ function SideNavbar() {
                   <MdOutlineSpaceDashboard className={"text-2xl text-gray-600 group-hover:text-white " + (path == '/' ? 'clickColor' : '')} />
                   <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path == '/' ? ' clickColor' : '')}>
                     Dashboard
+                  </h3>
+                </div>
+              </Link>
+
+              <Link href="/vehicles">
+                <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path == '/vehicles' ? ' clickBg' : '')}>
+                  <FaMotorcycle className={"text-2xl text-gray-600 group-hover:text-white " + (path == '/vehicles' ? 'clickColor' : '')} />
+                  <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path == '/vehicles' ? ' clickColor' : '')}>
+                    Vehicles
                   </h3>
                 </div>
               </Link>
@@ -95,17 +104,17 @@ function SideNavbar() {
               </Link>
 
               <Link href="/addEditOrder">
-                <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditOrder') ? ' clickBg' : '')}>
-                  <FaRegComments className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditOrder') ? 'clickColor' : '')} />
-                  <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditOrder') ? ' clickColor' : '')}>
+                <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditLocation') ? ' clickBg' : '')}>
+                  <FaRegComments className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditLocation') ? 'clickColor' : '')} />
+                  <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditLocation') ? ' clickColor' : '')}>
                     Manage Location
                   </h3>
                 </div>
               </Link>
               <Link href="/addEditLocation">
-                <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditLocation') ? ' clickBg' : '')}>
-                  <BiMessageSquareDots className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditLocation') ? 'clickColor' : '')} />
-                  <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditLocation') ? ' clickColor' : '')}>
+                <div className={"flex mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto" + (path.includes('/addEditOrder') ? ' clickBg' : '')}>
+                  <BiMessageSquareDots className={"text-2xl text-gray-600 group-hover:text-white " + (path.includes('/addEditOrder') ? 'clickColor' : '')} />
+                  <h3 className={"text-base text-gray-800 group-hover:text-white font-semibold" + (path.includes('/addEditOrder') ? ' clickColor' : '')}>
                     Manage Orders
                   </h3>
                 </div>

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ActionComp, PaginationComp, VehicleTableHeader } from "../commonComponent";
+import moment from 'moment';
 
 export default function DisplayTable() {
     const { apiData } = useSelector((state) => state)
     const [data, setData] = useState([])
     useEffect(() => {
-        if(apiData && apiData.length){
+        if (apiData && apiData.length) {
             const find = apiData.find(ele => ele.vehicleData)
-            if(find){
+            if (find) {
                 setData(find.vehicleData)
             }
         }
@@ -40,12 +41,12 @@ export default function DisplayTable() {
                                         <td>{accessChargePerKm}</td>
                                         <td>{transmissionType}</td>
                                         <td>{bookingCount}</td>
-                                        <td style={{ display: "ruby-text", marginBottom: "-22px" }}>{vehicleNumber}</td>
+                                        <td>{vehicleNumber}</td>
                                         <td>{location}</td>
-                                        <td style={{ display: "ruby-text", marginBottom: "-22px" }}>{pickupLocation}</td>
-                                        <td>{BookingStartDateAndTime ? BookingStartDateAndTime.startDate : ""}</td>
+                                        <td>{pickupLocation}</td>
+                                        <td>{BookingStartDateAndTime ? moment(BookingEndDateAndTime.startDate).format('D MMM, YYYY') : ""}</td>
                                         <td>{BookingStartDateAndTime ? BookingStartDateAndTime.startTime : ""}</td>
-                                        <td>{BookingEndDateAndTime ? BookingEndDateAndTime.endDate : ""}</td>
+                                        <td>{BookingEndDateAndTime ? moment(BookingEndDateAndTime.endDate).format('D MMM, YYYY') : ""}</td>
                                         <td>{BookingEndDateAndTime ? BookingEndDateAndTime.endTime : ""}</td>
                                         <td>
                                             <ActionComp path={"/addEditVehicle"} _id={_id} />

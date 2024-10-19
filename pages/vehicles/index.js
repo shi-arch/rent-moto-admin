@@ -1,20 +1,20 @@
 import Head from "next/head";
 import SideNavbar from "../../components/SideNavbar";
-import DisplayTable from "../../components/table/locationTable";
+import { useSelector } from 'react-redux';
+import DisplayTable from "../../components/table/vehicleTable";
 import { SimpleBackdrop } from "../../components/commonComponent";
-import { IoIosAddCircle } from "react-icons/io";
 import { useEffect } from "react";
-import { setReduxData } from "../../utils/constants";
-import { useSelector } from "react-redux";
+import { IoIosAddCircle } from "react-icons/io";
 import { Link } from "@mui/material";
+import { setReduxData } from "../../utils/constants";
 
 export default function Home() {
-  const { apiData } = useSelector(state => state)
+  const {apiData} = useSelector(state => state)
   useEffect(() => {
     (async () => {
-      if (apiData && !apiData.length) {
+      if(apiData && !apiData.length){
         await setReduxData()
-      }
+      }            
     })()
   }, [])
   return (
@@ -28,9 +28,9 @@ export default function Home() {
       <SideNavbar />
       <div style={{ padding: "24px 20px 31px 267px", background: "white" }}>
         <div style={{ display: "flex" }}>
-          <h1 style={{ fontWeight: "bolder", fontSize: "x-large" }}>LOCATION LIST</h1>
-          <Link href="/addEditLocation" style={{ marginLeft: "auto" }}>
-            <button style={{ marginLeft: "auto", padding: "12px", background: "black", color: "white", borderRadius: "12px", display: "flex" }}><span style={{ marginRight: "5px" }}>ADD LOCATION </span> <IoIosAddCircle style={{ marginTop: "5px", marginRight: "5px" }} /></button>
+          <h1 style={{ fontWeight: "bolder", fontSize: "x-large" }}>VEHICLE LIST</h1>
+          <Link href="/addEditVehicle" style={{ marginLeft: "auto" }}>
+            <button style={{ marginLeft: "auto", padding: "12px", background: "black", color: "white", borderRadius: "12px", display: "flex" }}><span style={{ marginRight: "5px" }}>ADD VEHICLE </span> <IoIosAddCircle style={{ marginTop: "5px", marginRight: "5px" }} /></button>
           </Link>
         </div>
         <DisplayTable />

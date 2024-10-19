@@ -48,12 +48,15 @@ const initialState = {
   selectedDuration: "",
   orderData: [],
   vehicleCount: 0,
-  str: ""
+  str: "",
+  gotu: false
 };
 
 const RootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'VEHICLECOUNT':
+      case 'GOTU':
+      return { ...state, gotu: action.payload };
+      case 'VEHICLECOUNT':
       return { ...state, vehicleCount: action.payload };
     case 'STR':
       return { ...state, str: action.payload };

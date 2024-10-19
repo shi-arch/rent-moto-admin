@@ -7,12 +7,15 @@ import { useDispatch, useSelector } from "react-redux";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { useEffect, useState } from "react";
-import { EditIcon, DeleteIcon } from "./icons";
+import { EditIcon, DeleteIcon, LocationIcon } from "./icons";
 import Link from "next/link";
 import _ from 'lodash'
 import { Grid } from "@mui/material";
+import { Card, CardHeader, CardBody } from "@nextui-org/card";
 import { apiCall } from "../utils/constants";
-import { postApi } from "../pages/api/response";
+import { getApi, postApi } from "../pages/api/response";
+import { LocationTableIcon, OrderIcon, Test, UserTableIcon } from "../utils/icons";
+import swal from 'sweetalert';
 
 
 export const InputBox = (props) => {
@@ -117,8 +120,18 @@ export const DropDown = (props) => {
     const [subData, setSubData] = useState("")
 
     useEffect(() => {
+        if(locationData && !locationData.length){
+            (async () => {
+                const res = await getApi('/getLocations')
+                debugger
+                dispatch({type: "LOCATIONDATA", payload: res.data})
+            })()
+        }
+    }, [locationData])
+
+    useEffect(() => {
         if (locationData && locationData.length) {
-            const locationStr = updatePacket?.location
+            const locationStr = updatePacket?.location ? updatePacket?.location : locationData[0].myLocation
             const pickupLocation = updatePacket.pickupLocation ? updatePacket.pickupLocation : locationData[0].subLocation[0].label
             let location = locationStr ? locationStr : locationData[0].myLocation
             const find = locationData.find(ele => ele.myLocation == location)
@@ -165,6 +178,42 @@ export const DropDown = (props) => {
     )
 }
 
+export const CardComponent = (props) => {
+    const { name } = props
+    const { apiData, vehicleCount } = useSelector(state => state)
+    const [count, setCount] = useState(0)
+    useEffect(() => {
+        if (apiData && apiData.length) {
+            if (name == "VEHICLES") {
+                setCount(vehicleCount)
+            } else {
+                let str = name == "USERS" ? "userData" : name == "LOCATIONS" ? "locationData" : name == "ORDERS" ? "orderData" : ""
+                const find = apiData.find(ele => ele[str])
+                if (find) {
+                    setCount(find[str].length)
+                }
+            }
+        }
+    }, [apiData])
+    return (
+        <div style={{ padding: "0px 50px" }}>
+            <Card style={{ background: "#1e40af", color: "white" }} className="py-4">
+                <CardBody className="overflow-visible py-2">
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                        <span>TOTAL {name} : </span><span style={{ marginLeft: "10px" }}>{count}</span>
+                    </div>
+                    <div style={{ margin: "0 auto" }}>
+                        {
+                            name == "VEHICLES" ? <Test /> : name == "USERS" ? <UserTableIcon /> : name == "LOCATIONS" ? <LocationTableIcon /> : name == "ORDERS" ? <OrderIcon /> : ""
+                        }
+                    </div>
+                </CardBody>
+            </Card>
+        </div>
+
+    )
+}
+
 export const DropDownData = (props) => {
     const dispatch = useDispatch()
     const { selectedDuration, durationData } = useSelector((state) => state)
@@ -198,19 +247,26 @@ export const DropDownData = (props) => {
 
 export const PaginationComp = () => {
     const dispatch = useDispatch()
-    const { totalPages, currentPage, apiData, userData, vehicleData, locationData, orderData, vehicleCount } = useSelector((state) => state)
-    const [totalData, setTotalData] = useState([])
+    const { totalPages, currentPage, apiData, userData, vehicleData, locationData, orderData, vehicleCount, totalData } = useSelector((state) => state)
+    const [totalDatas, setTotalData] = useState([])
+
+    useEffect(() => {
+        if (totalData.length) {
+            setTotalData(totalData)
+        }
+    }, [totalData])    
 
     useEffect(() => {
         if (apiData && apiData.length) {
             let pathName = window.location.pathname
-            setTotalData(pathName.includes("location") ? locationData : pathName.includes("user") ? userData : pathName.includes("order") ? orderData : vehicleData)
+            const data = pathName.includes("location") ? locationData : pathName.includes("user") ? userData : pathName.includes("order") ? orderData : vehicleData
+            dispatch({type: "TOTALDATA", payload: data})
         }
     }, [apiData])
 
     useEffect(() => {
-        if (totalData.length) {
-            let cloneTotalData = JSON.parse(JSON.stringify(totalData))
+        if (totalDatas.length) {
+            let cloneTotalData = JSON.parse(JSON.stringify(totalDatas))
             let data = []
             if (currentPage == 1) {
                 data = cloneTotalData.slice(0, 10)
@@ -219,13 +275,13 @@ export const PaginationComp = () => {
             }
             dispatch({ type: "PARTIALDATA", payload: data })
         }
-    }, [totalData, currentPage])
+    }, [totalDatas, currentPage])
 
     useEffect(() => {
-        if (totalData && totalData.length) {
+        if (totalDatas && totalDatas.length) {
             dispatch({ type: "TOTALPAGES", payload: Math.trunc(totalData.length / 10) + 1 })
         }
-    }, [totalData])
+    }, [totalDatas])
     return (
         <div className="row" style={{ textAlign: "center" }}>
             <div className="col-md-4">
@@ -255,7 +311,7 @@ export const PaginationComp = () => {
 }
 
 export const ActionComp = (props) => {
-    const { _id, path } = props
+    const { _id, path, orId, strToDelete } = props
     return (
         <div className="relative flex items-center gap-2">
             <Tooltip content="Add or Update">
@@ -269,14 +325,30 @@ export const ActionComp = (props) => {
                 </Link>
             </Tooltip>
             <Tooltip color="danger" content="Delete user">
-                <Link href={{
-                    pathname: '/addEditVehicle',
-                    query: { _id }
+                <div onClick={async () => {
+                    const willDelete = await swal({
+                        title: "Are you sure?",
+                        text: "Are you sure that you want to delete this file?",
+                        icon: "warning",
+                        dangerMode: true,
+                    });
+                    if (willDelete) {
+                        const res = await postApi('/deleteData', {
+                            _id: orId ? orId : _id, type: path.includes("User") ? 'user' : path.includes("Vehicle") ? 'vehicle' : path.includes("Location") ? 'location' : "order", strToDelete
+                        })
+                        if (res && res.status == "201") {
+                            swal("Deleted!", "Your imaginary file has been deleted!", "success").then(res => {
+                               window.location.reload()
+                            })                            
+                        } else {
+                            swal("Sorry!", "Your imaginary file has been deleted!", "success");
+                        }                       
+                    }
                 }}>
                     <span className="text-lg text-danger cursor-pointer active:opacity-50">
                         <DeleteIcon />
                     </span>
-                </Link>
+                </div>
             </Tooltip>
         </div>
     )

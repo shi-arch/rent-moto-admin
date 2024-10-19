@@ -8,7 +8,7 @@ import { addOrUpdate, populateData } from "../../utils/constants";
 export default function Home() {
   const dispatch = useDispatch()
   const router = useRouter()
-  const { updatePacket, str } = useSelector((state) => state)
+  const { updatePacket, str, gotu } = useSelector((state) => state)
 
   useEffect(() => {
     populateData()
@@ -19,6 +19,13 @@ export default function Home() {
       dispatch({ type: "CHECKERROR", payload: false })
     };
   }, []);
+  useEffect(() => {
+    if(gotu){
+      dispatch({type: "GOTU", payload: false})
+      router.push("/locations")      
+    }    
+  }, [gotu]);
+  
   return (
     <div className="bg-blue-800">
       <SimpleBackdrop />
@@ -42,6 +49,8 @@ export default function Home() {
             </div>
             <button onClick={async () => {
               addOrUpdate("/createLocation")
+              //let redirect = pathName.includes("addEditLocation") ? "locations" : pathName.includes("addEditUser") ? "users" : "vehicles"
+              
             }} style={{ marginTop: "20px", width: "50%", padding: "12px", background: "black", color: "white", borderRadius: "12px" }}>{str}</button>
           </div>
         }

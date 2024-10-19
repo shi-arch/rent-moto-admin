@@ -104,7 +104,6 @@ export const setReduxData = async () => {
     //}
     if (apiData && apiData.length) {
         dispatch({ type: "APIDATA", payload: apiData })
-        debugger
         for (let i = 0; i < apiData.length; i++) {
             let o = apiData[i]
             let key = Object.keys(o)[0]
@@ -122,13 +121,19 @@ export const populateData = () => {
     let pathName = window.location.pathname
     let path = pathName.includes("addEditLocation") ? "Location" : pathName.includes("addEditOrder") ? "Order" : pathName.includes("addEditUser") ? "User" : "Vehicle"
     let _id = params.get('_id')
+    let obj = {}
     if(_id){
         const find = partialData.find(o => o._id == _id)
         if (find) {
+            obj = find
+            path = "Update " + path 
             dispatch({ type: "UPDATEPACKET", payload: find })
-            dispatch({ type: "STR", payload: "Update " + path })
         }
-    }    
+    } else {
+        path = "Add " + path 
+    }
+    dispatch({ type: "UPDATEPACKET", payload: obj }) 
+    dispatch({ type: "STR", payload: path })   
 }
 
 export const addOrUpdate = async (apiurl) => {
@@ -162,7 +167,7 @@ export const addOrUpdate = async (apiurl) => {
             filter = [{ label: updatePacket.subLocation, value: updatePacket.subLocation }]
         }
         if (updatePacket.location && filter.length && updatePacket.url) {
-            updateDataPacket = { myLocation: updatePacket.location, subLocation: filter, url: updatePacket.url }
+            updateDataPacket = { myLocation: updatePacket.location, subLocation: filter, url: updatePacket.url, _id: orId }
             await postApi(apiurl, updateDataPacket)
         } else {
             dispatch({ type: "LOADING", payload: false })
@@ -206,10 +211,11 @@ export const addOrUpdate = async (apiurl) => {
                 if (index !== -1) {
                     cloneApiData.splice(index, 1, {[str]: cloneData});
                     dispatch({ type: "APIDATA", payload: cloneApiData })
-                    localStorage.setItem("apiData", JSON.stringify(cloneApiData))
+                    localStorage.setItem("apiData", JSON.stringify(cloneApiData))                    
                 }
-            }
+            }            
         }
+        dispatch({type: "GOTU", payload: true})
     })
 }
 
