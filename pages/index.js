@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 import DisplayTable from "../components/table/vehicleTable";
 import { CardComponent, SimpleBackdrop } from "../components/commonComponent";
-import { useEffect } from "react";
+import { useEffect } from "react";    
 import { getApi, postApi } from "./api/response";
 import { IoIosAddCircle } from "react-icons/io";
 import { Link } from "@mui/material";
