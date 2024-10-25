@@ -32,7 +32,7 @@ export default function Home() {
         <link rel="icon" href="/pro.ico" />
       </Head>
       <SideNavbar />
-      <div style={{ padding: "108px 20px 31px 267px", background: "white"}}>
+      <div style={{ padding: "108px 20px 30px 267px", background: "white"}}>
         <div className="row" style={{marginBottom: "83px"}}>
           <div className="col-md-4">
             <CardComponent name={"VEHICLES"}/>
