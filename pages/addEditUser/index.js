@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { addOrUpdate, populateData } from "../../utils/constants";
 
 
-export default function Home() {
+export default function Home(props) {
   const router = useRouter()
   const dispatch = useDispatch()
   const { updatePacket, str, gotu } = useSelector((state) => state)
