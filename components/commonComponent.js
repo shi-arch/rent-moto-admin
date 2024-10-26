@@ -14,29 +14,29 @@ import { LocationTableIcon, OrderIcon, Test, UserTableIcon } from "../utils/icon
 import swal from 'sweetalert';
 
 
-// export const InputBox = (props) => {
-//     const dispatch = useDispatch()
-//     const { type, placeholder, label, value, readOnly } = props
-//     const { updatePacket, checkError } = useSelector((state) => state)
-//     return (
-//         <>
-//             <label>{label}</label>
-//             <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-//                 <input readOnly={readOnly} onChange={(e) => {
-//                     let cloneData = _.cloneDeep(updatePacket)
-//                     const { value } = e.target
-//                     if (cloneData && cloneData[placeholder]) {
-//                         cloneData = { ...cloneData, [placeholder]: value }
-//                     } else {
-//                         cloneData[placeholder] = value
-//                     }
-//                     dispatch({ type: "UPDATEPACKET", payload: cloneData })
-//                 }} value={value} style={{ padding: "10px", border: "1px solid", width: "100%", borderRadius: "5px" }} type={type ? type : "text"} placeholder={placeholder} />
-//                 <span style={{ marginTop: "-25px", color: "red", fontSize: "smaller" }}>{checkError && !updatePacket[placeholder] ? 'Please enter the value' : ""}</span>
-//             </div>
-//         </>
-//     )
-// }
+export const InputBox = (props) => {
+    const dispatch = useDispatch()
+    const { type, placeholder, label, value, readOnly } = props
+    const { updatePacket, checkError } = useSelector((state) => state)
+    return (
+        <>
+            <label>{label}</label>
+            <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                <input readOnly={readOnly} onChange={(e) => {
+                    let cloneData = _.cloneDeep(updatePacket)
+                    const { value } = e.target
+                    if (cloneData && cloneData[placeholder]) {
+                        cloneData = { ...cloneData, [placeholder]: value }
+                    } else {
+                        cloneData[placeholder] = value
+                    }
+                    dispatch({ type: "UPDATEPACKET", payload: cloneData })
+                }} value={value} style={{ padding: "10px", border: "1px solid", width: "100%", borderRadius: "5px" }} type={type ? type : "text"} placeholder={placeholder} />
+                <span style={{ marginTop: "-25px", color: "red", fontSize: "smaller" }}>{checkError && !updatePacket[placeholder] ? 'Please enter the value' : ""}</span>
+            </div>
+        </>
+    )
+}
 
 export const VehicleTableHeader = () => {
     return (
@@ -211,36 +211,36 @@ export const CardComponent = (props) => {
     )
 }
 
-// export const DropDownData = (props) => {
-//     const dispatch = useDispatch()
-//     const { selectedDuration, durationData } = useSelector((state) => state)
-//     const { label, _id } = props
+export const DropDownData = (props) => {
+    const dispatch = useDispatch()
+    const { selectedDuration, durationData } = useSelector((state) => state)
+    const { label, _id } = props
 
-//     return (
-//         <>
-//             <div style={{ display: 'grid' }}>
-//                 <label>{label}  (Optional)</label>
-//                 <select style={{ background: "rosybrown" }} onChange={(e) => {
-//                     const { value } = e.target
-//                     if (value !== "Please select the duration") {
-//                         dispatch({ type: "SELECTEDDURATION", payload: value })
-//                         dispatch({ type: "LOADING", payload: true })
-//                         postApi('/createBookingDuration', { bookingDuration: { label: value }, bookingId: _id })
-//                         dispatch({ type: "LOADING", payload: false })
-//                     }
-//                 }}>
-//                     <option>Please select the duration</option>
-//                     {
-//                         durationData && durationData.length ? durationData.map(ele => (
-//                             <option selected={ele.bookingDuration.label == selectedDuration ? true : false} key={ele.bookingDuration.label}>{ele.bookingDuration.label}</option>
-//                         )) : ""
-//                     }
-//                 </select>
+    return (
+        <>
+            <div style={{ display: 'grid' }}>
+                <label>{label}  (Optional)</label>
+                <select style={{ background: "rosybrown" }} onChange={(e) => {
+                    const { value } = e.target
+                    if (value !== "Please select the duration") {
+                        dispatch({ type: "SELECTEDDURATION", payload: value })
+                        dispatch({ type: "LOADING", payload: true })
+                        postApi('/createBookingDuration', { bookingDuration: { label: value }, bookingId: _id })
+                        dispatch({ type: "LOADING", payload: false })
+                    }
+                }}>
+                    <option>Please select the duration</option>
+                    {
+                        durationData && durationData.length ? durationData.map(ele => (
+                            <option selected={ele.bookingDuration.label == selectedDuration ? true : false} key={ele.bookingDuration.label}>{ele.bookingDuration.label}</option>
+                        )) : ""
+                    }
+                </select>
 
-//             </div>
-//         </>
-//     )
-// }
+            </div>
+        </>
+    )
+}
 
 export const PaginationComp = () => {
     const dispatch = useDispatch()
