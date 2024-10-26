@@ -32,7 +32,7 @@ export default function Home(props) {
 
   useEffect(() => {
     setForm([
-      <div style={{ marginTop: "30px", border: "2.5px solid #737889", padding: "30px", borderRadius: "10px" }}>
+      <div key={1} style={{ marginTop: "30px", border: "2.5px solid #737889", padding: "30px", borderRadius: "10px" }}>
         <div className="row" style={{ marginBottom: "20px" }}>
           <div className="col-md-4">
             <InputBox value={updatePacket.userType} label={"User Type"} placeholder={"userType"} />
