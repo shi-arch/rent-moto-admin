@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from "next/router";
 import DisplayTable from "../components/table/vehicleTable";
 import { CardComponent, SimpleBackdrop } from "../components/commonComponent";
-import { useEffect } from "react";    
+import { useEffect } from "react";
 import { getApi, postApi } from "./api/response";
 import { IoIosAddCircle } from "react-icons/io";
 import { Link } from "@mui/material";
@@ -32,10 +32,10 @@ export default function Home() {
         <link rel="icon" href="/pro.ico" />
       </Head>
       <SideNavbar />
-      <div style={{ padding: "108px 20px 30px 267px", background: "white"}}>
-        <div className="row" style={{marginBottom: "83px"}}>
+      <div style={{ padding: "108px 20px 30px 267px", background: "white" }}>
+        <div className="row" style={{ marginBottom: "83px" }}>
           <div className="col-md-4">
-            <CardComponent name={"VEHICLES"}/>
+            <CardComponent name={"VEHICLES"} />
           </div>
           <div className="col-md-4">
             <CardComponent name={"USERS"} />
@@ -43,18 +43,18 @@ export default function Home() {
           <div className="col-md-4">
             <CardComponent name={"LOCATIONS"} />
           </div>
-        </div>  
-        <div className="row" style={{marginBottom: "83px"}}>
+        </div>
+        <div className="row" style={{ marginBottom: "83px" }}>
           <div className="col-md-4">
             <CardComponent name={"ORDERS"} />
           </div>
-          {/* <div className="col-md-4">
+          <div className="col-md-4">
             <CardComponent name={"USERS"} count={200} />
           </div>
           <div className="col-md-4">
             <CardComponent name={"LOCATIONS"} count={200} />
-          </div> */}
-        </div>        
+          </div>
+        </div>
       </div>
     </div>
   );

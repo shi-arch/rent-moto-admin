@@ -1,8 +1,5 @@
-import { Input } from "@nextui-org/input";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Button } from "@nextui-org/button";
-import { Tooltip } from "@nextui-org/tooltip";
 import { useDispatch, useSelector } from "react-redux";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
@@ -11,36 +8,35 @@ import { EditIcon, DeleteIcon, LocationIcon } from "./icons";
 import Link from "next/link";
 import _ from 'lodash'
 import { Grid } from "@mui/material";
-import { Card, CardHeader, CardBody } from "@nextui-org/card";
 import { apiCall } from "../utils/constants";
 import { getApi, postApi } from "../pages/api/response";
 import { LocationTableIcon, OrderIcon, Test, UserTableIcon } from "../utils/icons";
 import swal from 'sweetalert';
 
 
-export const InputBox = (props) => {
-    const dispatch = useDispatch()
-    const { type, placeholder, label, value, readOnly } = props
-    const { updatePacket, checkError } = useSelector((state) => state)
-    return (
-        <>
-            <label>{label}</label>
-            <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
-                <input readOnly={readOnly} onChange={(e) => {
-                    let cloneData = _.cloneDeep(updatePacket)
-                    const { value } = e.target
-                    if (cloneData && cloneData[placeholder]) {
-                        cloneData = { ...cloneData, [placeholder]: value }
-                    } else {
-                        cloneData[placeholder] = value
-                    }
-                    dispatch({ type: "UPDATEPACKET", payload: cloneData })
-                }} value={value} style={{ padding: "10px", border: "1px solid", width: "100%", borderRadius: "5px" }} type={type ? type : "text"} placeholder={placeholder} />
-                <span style={{ marginTop: "-25px", color: "red", fontSize: "smaller" }}>{checkError && !updatePacket[placeholder] ? 'Please enter the value' : ""}</span>
-            </div>
-        </>
-    )
-}
+// export const InputBox = (props) => {
+//     const dispatch = useDispatch()
+//     const { type, placeholder, label, value, readOnly } = props
+//     const { updatePacket, checkError } = useSelector((state) => state)
+//     return (
+//         <>
+//             <label>{label}</label>
+//             <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+//                 <input readOnly={readOnly} onChange={(e) => {
+//                     let cloneData = _.cloneDeep(updatePacket)
+//                     const { value } = e.target
+//                     if (cloneData && cloneData[placeholder]) {
+//                         cloneData = { ...cloneData, [placeholder]: value }
+//                     } else {
+//                         cloneData[placeholder] = value
+//                     }
+//                     dispatch({ type: "UPDATEPACKET", payload: cloneData })
+//                 }} value={value} style={{ padding: "10px", border: "1px solid", width: "100%", borderRadius: "5px" }} type={type ? type : "text"} placeholder={placeholder} />
+//                 <span style={{ marginTop: "-25px", color: "red", fontSize: "smaller" }}>{checkError && !updatePacket[placeholder] ? 'Please enter the value' : ""}</span>
+//             </div>
+//         </>
+//     )
+// }
 
 export const VehicleTableHeader = () => {
     return (
@@ -120,11 +116,11 @@ export const DropDown = (props) => {
     const [subData, setSubData] = useState("")
 
     useEffect(() => {
-        if(locationData && !locationData.length){
+        if (locationData && !locationData.length) {
             (async () => {
                 const res = await getApi('/getLocations')
                 debugger
-                dispatch({type: "LOCATIONDATA", payload: res.data})
+                dispatch({ type: "LOCATIONDATA", payload: res.data })
             })()
         }
     }, [locationData])
@@ -178,6 +174,7 @@ export const DropDown = (props) => {
     )
 }
 
+
 export const CardComponent = (props) => {
     const { name } = props
     const { apiData, vehicleCount } = useSelector(state => state)
@@ -197,8 +194,8 @@ export const CardComponent = (props) => {
     }, [apiData])
     return (
         <div style={{ padding: "0px 50px" }}>
-            <Card style={{ background: "#1e40af", color: "white" }} className="py-4">
-                <CardBody className="overflow-visible py-2">
+            <div style={{ background: "#1e40af", color: "white" }} className="py-4">
+                <div className="overflow-visible py-2">
                     <div style={{ display: "flex", justifyContent: "center" }}>
                         <span>TOTAL {name} : </span><span style={{ marginLeft: "10px" }}>{count}</span>
                     </div>
@@ -207,43 +204,43 @@ export const CardComponent = (props) => {
                             name == "VEHICLES" ? <Test /> : name == "USERS" ? <UserTableIcon /> : name == "LOCATIONS" ? <LocationTableIcon /> : name == "ORDERS" ? <OrderIcon /> : ""
                         }
                     </div>
-                </CardBody>
-            </Card>
+                </div>
+            </div>
         </div>
 
     )
 }
 
-export const DropDownData = (props) => {
-    const dispatch = useDispatch()
-    const { selectedDuration, durationData } = useSelector((state) => state)
-    const { label, _id } = props
+// export const DropDownData = (props) => {
+//     const dispatch = useDispatch()
+//     const { selectedDuration, durationData } = useSelector((state) => state)
+//     const { label, _id } = props
 
-    return (
-        <>
-            <div style={{ display: 'grid' }}>
-                <label>{label}  (Optional)</label>
-                <select style={{ background: "rosybrown" }} onChange={(e) => {
-                    const { value } = e.target
-                    if (value !== "Please select the duration") {
-                        dispatch({ type: "SELECTEDDURATION", payload: value })
-                        dispatch({ type: "LOADING", payload: true })
-                        postApi('/createBookingDuration', { bookingDuration: { label: value }, bookingId: _id })
-                        dispatch({ type: "LOADING", payload: false })
-                    }
-                }}>
-                    <option>Please select the duration</option>
-                    {
-                        durationData && durationData.length ? durationData.map(ele => (
-                            <option selected={ele.bookingDuration.label == selectedDuration ? true : false} key={ele.bookingDuration.label}>{ele.bookingDuration.label}</option>
-                        )) : ""
-                    }
-                </select>
+//     return (
+//         <>
+//             <div style={{ display: 'grid' }}>
+//                 <label>{label}  (Optional)</label>
+//                 <select style={{ background: "rosybrown" }} onChange={(e) => {
+//                     const { value } = e.target
+//                     if (value !== "Please select the duration") {
+//                         dispatch({ type: "SELECTEDDURATION", payload: value })
+//                         dispatch({ type: "LOADING", payload: true })
+//                         postApi('/createBookingDuration', { bookingDuration: { label: value }, bookingId: _id })
+//                         dispatch({ type: "LOADING", payload: false })
+//                     }
+//                 }}>
+//                     <option>Please select the duration</option>
+//                     {
+//                         durationData && durationData.length ? durationData.map(ele => (
+//                             <option selected={ele.bookingDuration.label == selectedDuration ? true : false} key={ele.bookingDuration.label}>{ele.bookingDuration.label}</option>
+//                         )) : ""
+//                     }
+//                 </select>
 
-            </div>
-        </>
-    )
-}
+//             </div>
+//         </>
+//     )
+// }
 
 export const PaginationComp = () => {
     const dispatch = useDispatch()
@@ -254,13 +251,13 @@ export const PaginationComp = () => {
         if (totalData.length) {
             setTotalData(totalData)
         }
-    }, [totalData])    
+    }, [totalData])
 
     useEffect(() => {
         if (apiData && apiData.length) {
             let pathName = window.location.pathname
             const data = pathName.includes("location") ? locationData : pathName.includes("user") ? userData : pathName.includes("order") ? orderData : vehicleData
-            dispatch({type: "TOTALDATA", payload: data})
+            dispatch({ type: "TOTALDATA", payload: data })
         }
     }, [apiData])
 
@@ -314,17 +311,15 @@ export const ActionComp = (props) => {
     const { _id, path, orId, strToDelete } = props
     return (
         <div className="relative flex items-center gap-2">
-            <Tooltip content="Add or Update">
-                <Link href={{
-                    pathname: path,
-                    query: { _id }
-                }}>
-                    <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                        <EditIcon />
-                    </span>
-                </Link>
-            </Tooltip>
-            <Tooltip color="danger" content="Delete user">
+            <Link href={{
+                pathname: path,
+                query: { _id }
+            }}>
+                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                    <EditIcon />
+                </span>
+            </Link>
+            {/* <Tooltip color="danger" content="Delete user"> */}
                 <div onClick={async () => {
                     const willDelete = await swal({
                         title: "Are you sure?",
@@ -338,18 +333,18 @@ export const ActionComp = (props) => {
                         })
                         if (res && res.status == "201") {
                             swal("Deleted!", "Your imaginary file has been deleted!", "success").then(res => {
-                               window.location.reload()
-                            })                            
+                                window.location.reload()
+                            })
                         } else {
                             swal("Sorry!", "Your imaginary file has been deleted!", "success");
-                        }                       
+                        }
                     }
                 }}>
                     <span className="text-lg text-danger cursor-pointer active:opacity-50">
                         <DeleteIcon />
                     </span>
                 </div>
-            </Tooltip>
+            {/* </Tooltip> */}
         </div>
     )
 }
