@@ -5,6 +5,7 @@ import store from "../utils/store";
 import  "bootstrap/dist/css/bootstrap.min.css"
 
 function MyApp({ Component, pageProps }) {
+  if (!Component || !pageProps) return null; 
   return (
     <Provider store={store}>
       <Component {...pageProps} />
